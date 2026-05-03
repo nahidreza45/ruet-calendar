@@ -8,35 +8,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8fafc;
+            /* Light Mode - High Contrast Palette */
+            --bg-color: #f1f5f9;
             --surface-color: #ffffff;
             --text-main: #0f172a;
-            --text-muted: #64748b;
-            --primary: #0f766e;
-            --ruet-red: #d32f2f;
-            --holiday-bg: #ffe4e6;
-            --holiday-text: #e11d48;
-            --holiday-hover: #fecdd3;
-            --weekend-text: #ef4444;
-            --border: #e2e8f0;
+            --text-muted: #475569;
+            --primary: #047857; /* Deep RUET Green */
+            --ruet-red: #b91c1c; 
+            
+            /* Calendar Cell Colors */
+            --border: #cbd5e1;
+            --cell-hover: #e2e8f0;
+            
+            /* Weekend Colors */
+            --weekend-text: #dc2626;
+            --weekend-bg: #fef2f2;
+            
+            /* Holiday Colors */
+            --holiday-bg: #fee2e2;
+            --holiday-text: #b91c1c;
+            --holiday-border: #fca5a5;
+            --holiday-hover: #fecaca;
+            
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --tooltip-bg: #0f172a;
             --tooltip-text: #ffffff;
         }
 
-        /* Dark Mode Variables */
+        /* Dark Mode - High Contrast Palette */
         body.dark-mode {
             --bg-color: #0f172a;
             --surface-color: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --primary: #14b8a6;
+            --primary: #10b981; /* Bright Emerald Green for dark mode */
             --ruet-red: #ef4444; 
-            --holiday-bg: #4c1d95; 
-            --holiday-text: #fda4af;
-            --holiday-hover: #5b21b6;
-            --weekend-text: #f87171;
+            
+            /* Calendar Cell Colors */
             --border: #334155;
+            --cell-hover: #334155;
+            
+            /* Weekend Colors */
+            --weekend-text: #f87171;
+            --weekend-bg: rgba(239, 68, 68, 0.05);
+            
+            /* Holiday Colors */
+            --holiday-bg: rgba(220, 38, 38, 0.15); 
+            --holiday-text: #fca5a5;
+            --holiday-border: rgba(239, 68, 68, 0.5);
+            --holiday-hover: rgba(220, 38, 38, 0.3);
+            
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
             --tooltip-bg: #f8fafc;
             --tooltip-text: #0f172a;
@@ -56,130 +77,136 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 1rem;
             transition: background-color 0.3s, color 0.3s;
+            overflow: hidden; /* Prevent full page scroll if possible */
         }
 
-        /* Header Restyling */
+        /* Compact Header */
         header {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            gap: 1.5rem;
-            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
         }
 
         .brand-section {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .brand-section img {
-            height: 90px;
+            height: 65px; /* Smaller logo */
             width: auto;
             background: #fff; 
             border-radius: 50%;
-            padding: 4px;
+            padding: 3px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .header-text-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
         }
 
         .motto {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 0.3rem;
+            color: var(--text-muted);
+            margin-bottom: 0.1rem;
         }
 
         .title-bn {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--ruet-red);
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.1rem;
             letter-spacing: -0.5px;
         }
 
         .title-en {
-            font-size: 1.25rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--primary);
             letter-spacing: 0.5px;
         }
 
         .header-buttons {
             display: flex;
-            justify-content: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            width: 100%;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
+            justify-content: flex-end;
         }
 
         button.outline-btn {
             background: var(--surface-color);
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 0.85rem;
             font-weight: 600;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
+        button.outline-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
         button.outline-btn:hover {
-            background: var(--border);
-            transform: translateY(-1px);
+            background: var(--cell-hover);
+            border-color: var(--text-muted);
         }
 
         /* Layout */
         .main-container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
+            gap: 1.5rem;
+            align-items: stretch; /* Make both columns same height */
+            height: calc(100vh - 120px); /* Fill remaining space minus header */
+            min-height: 450px;
         }
 
         /* Calendar Card */
         .calendar-card {
             background: var(--surface-color);
-            border-radius: 16px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
             box-shadow: var(--shadow);
-            transition: background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .calendar-header h2 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--primary);
         }
@@ -187,9 +214,9 @@
         .icon-btn {
             background: var(--surface-color);
             border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -207,32 +234,37 @@
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px; 
+            gap: 6px; 
             text-align: center;
+            flex-grow: 1; /* Allow grid to fill space */
         }
 
         .day-name {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.2rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            align-self: end;
         }
 
+        /* COMPACT DATE CELLS (Removed aspect-ratio) */
         .day-cell {
-            aspect-ratio: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            border-radius: 8px; 
+            border-radius: 6px; 
             border: 1px solid var(--border); 
             cursor: default;
             position: relative;
             transition: 0.2s;
             background-color: var(--surface-color);
+            height: 100%; 
+            min-height: 45px; /* Force small height instead of perfect square */
+            padding: 0.2rem;
         }
 
         .day-cell.empty {
@@ -242,24 +274,26 @@
 
         .day-cell:not(.empty):hover {
             border-color: var(--primary);
-            box-shadow: 0 0 8px rgba(0,0,0,0.05);
+            background-color: var(--cell-hover);
             z-index: 2;
         }
 
         .day-cell.weekend {
             color: var(--weekend-text);
-            background-color: rgba(239, 68, 68, 0.03);
+            background-color: var(--weekend-bg);
         }
 
         .day-cell.holiday {
             background-color: var(--holiday-bg);
             color: var(--holiday-text);
-            border-color: var(--holiday-bg);
+            border: 1.5px solid var(--holiday-border); /* Thicker border for highlight */
             cursor: pointer;
+            font-weight: 700;
         }
 
         .day-cell.holiday:hover {
             background-color: var(--holiday-hover);
+            transform: scale(1.02);
         }
 
         /* Tooltip */
@@ -269,14 +303,14 @@
             color: var(--tooltip-text);
             text-align: center;
             border-radius: 6px;
-            padding: 0.6rem 0.8rem;
+            padding: 0.5rem 0.75rem;
             position: absolute;
             z-index: 10;
             bottom: 110%;
             left: 50%;
             transform: translateX(-50%);
             white-space: nowrap;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             opacity: 0;
             transition: opacity 0.2s;
@@ -289,8 +323,8 @@
             position: absolute;
             top: 100%;
             left: 50%;
-            margin-left: -6px;
-            border-width: 6px;
+            margin-left: -5px;
+            border-width: 5px;
             border-style: solid;
             border-color: var(--tooltip-bg) transparent transparent transparent;
         }
@@ -303,31 +337,44 @@
         /* Holiday Sidebar */
         .holiday-sidebar {
             background: var(--surface-color);
-            border-radius: 16px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
             box-shadow: var(--shadow);
             height: 100%;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            overflow-y: auto; /* Scroll inside sidebar if list is long */
+            display: flex;
+            flex-direction: column;
         }
 
         .holiday-sidebar h3 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
+            border-bottom: 2px solid var(--border);
             color: var(--text-main);
             font-weight: 700;
+            flex-shrink: 0;
         }
 
         .holiday-list {
             list-style: none;
+            overflow-y: auto;
+            padding-right: 5px;
         }
 
+        /* Custom Scrollbar for list */
+        .holiday-list::-webkit-scrollbar { width: 6px; }
+        .holiday-list::-webkit-scrollbar-track { background: transparent; }
+        .holiday-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
         .holiday-item {
-            margin-bottom: 1.2rem;
-            font-size: 0.95rem;
-            padding-left: 0.5rem;
-            border-left: 3px solid var(--holiday-text);
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            padding-left: 0.6rem;
+            border-left: 3px solid var(--holiday-border);
+            background: var(--holiday-bg);
+            padding: 0.5rem;
+            border-radius: 0 6px 6px 0;
         }
 
         .holiday-date {
@@ -335,127 +382,58 @@
             color: var(--holiday-text);
             display: block;
             margin-bottom: 0.2rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .holiday-name {
             color: var(--text-main);
-            line-height: 1.4;
+            line-height: 1.3;
+            font-weight: 600;
         }
 
         .no-holidays {
             color: var(--text-muted);
             font-style: italic;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            text-align: center;
             padding-top: 1rem;
         }
 
-        /* Modals */
+        /* Modals (Unchanged from previous functional version) */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s;
-            z-index: 100;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100;
         }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 600px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow);
-            position: relative;
-            transform: translateY(-20px);
-            transition: 0.3s;
+            background: var(--surface-color); border-radius: 12px; padding: 2rem;
+            width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto;
+            box-shadow: var(--shadow); position: relative; transform: translateY(-20px); transition: 0.3s;
         }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
+        .modal-overlay.active .modal-content { transform: translateY(0); }
         .close-btn {
-            position: sticky;
-            top: -10px;
-            float: right;
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
+            position: sticky; top: -10px; float: right; background: var(--surface-color);
+            border: 1px solid var(--border); border-radius: 50%; width: 30px; height: 30px;
+            font-size: 1.2rem; cursor: pointer; color: var(--text-main); display: flex;
+            align-items: center; justify-content: center; z-index: 10;
         }
+        .close-btn:hover { background: var(--holiday-bg); color: var(--holiday-text); border-color: var(--holiday-border); }
+        .modal-content h3 { margin-bottom: 1.5rem; color: var(--primary); font-size: 1.3rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+        .syn-group { margin-bottom: 1.2rem; }
+        .syn-role { font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 0.2rem; }
+        .syn-name { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
+        .syn-desc { font-size: 0.85rem; color: var(--text-muted); }
+        .syn-list { list-style-type: disc; padding-left: 1.5rem; }
+        .syn-list li { margin-bottom: 0.5rem; font-size: 0.95rem; }
 
-        .close-btn:hover {
-            background: var(--holiday-bg);
-            color: var(--holiday-text);
-        }
-
-        .modal-content h3 {
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-            font-size: 1.4rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 0.5rem;
-        }
-
-        /* Syndicate List Styling */
-        .syn-group {
-            margin-bottom: 1.5rem;
-        }
-        .syn-role {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.05rem;
-            margin-bottom: 0.3rem;
-        }
-        .syn-name {
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        .syn-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-        .syn-list {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-        }
-        .syn-list li {
-            margin-bottom: 0.8rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-            .title-bn { font-size: 1.6rem; }
-            .title-en { font-size: 0.9rem; }
-            .brand-section img { height: 70px; }
+        /* Responsive constraints */
+        @media (max-width: 900px) {
+            body { overflow: auto; height: auto; }
+            header { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
+            .header-buttons { justify-content: center; }
+            .main-container { grid-template-columns: 1fr; height: auto; }
+            .calendar-card, .holiday-sidebar { height: auto; }
         }
     </style>
 </head>
@@ -472,22 +450,22 @@
         </div>
         <div class="header-buttons">
             <button class="outline-btn" id="theme-toggle">
-                <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
-                <span id="theme-text">Dark Mode</span>
+                <span id="theme-text">Theme</span>
             </button>
             <button class="outline-btn" onclick="openModal('syndicateModal')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
-                Syndicate Info
+                Syndicate
             </button>
             <button class="outline-btn" onclick="openModal('contactModal')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
                 Contact
@@ -500,11 +478,11 @@
         <div class="calendar-card">
             <div class="calendar-header">
                 <button class="icon-btn" id="prev-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
                 <h2 id="month-year-display">January 2026</h2>
                 <button class="icon-btn" id="next-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
                 </button>
             </div>
             
@@ -670,7 +648,7 @@
         const monthDisplayEl = document.getElementById('month-year-display');
         const sidebarHolidaysEl = document.getElementById('sidebar-holidays');
 
-        // FIXED Theme Toggle Logic
+        // Theme Toggle Logic
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const themeText = document.getElementById('theme-text');
@@ -697,10 +675,8 @@
 
         function updateThemeUI(dark) {
             if (dark) {
-                themeText.innerText = 'Light Mode';
                 themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
             } else {
-                themeText.innerText = 'Dark Mode';
                 themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
             }
         }
