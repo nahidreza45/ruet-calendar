@@ -2,438 +2,166 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RUET Academic Calendar 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Light Mode - High Contrast Palette */
+            /* Light Mode Palette */
             --bg-color: #f1f5f9;
             --surface-color: #ffffff;
             --text-main: #0f172a;
             --text-muted: #475569;
-            --primary: #047857; /* Deep RUET Green */
+            --primary: #047857; 
             --ruet-red: #b91c1c; 
-            
-            /* Calendar Cell Colors */
             --border: #cbd5e1;
             --cell-hover: #e2e8f0;
-            
-            /* Weekend Colors */
             --weekend-text: #dc2626;
             --weekend-bg: #fef2f2;
-            
-            /* Holiday Colors */
             --holiday-bg: #fee2e2;
             --holiday-text: #b91c1c;
             --holiday-border: #fca5a5;
             --holiday-hover: #fecaca;
-            
+            --today-border: #047857;
+            --today-bg: #ecfdf5;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --tooltip-bg: #0f172a;
             --tooltip-text: #ffffff;
         }
 
-        /* Dark Mode - High Contrast Palette */
+        /* Dark Mode Palette */
         body.dark-mode {
             --bg-color: #0f172a;
             --surface-color: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --primary: #10b981; /* Bright Emerald Green for dark mode */
+            --primary: #10b981; 
             --ruet-red: #ef4444; 
-            
-            /* Calendar Cell Colors */
             --border: #334155;
             --cell-hover: #334155;
-            
-            /* Weekend Colors */
             --weekend-text: #f87171;
             --weekend-bg: rgba(239, 68, 68, 0.05);
-            
-            /* Holiday Colors */
             --holiday-bg: rgba(220, 38, 38, 0.15); 
             --holiday-text: #fca5a5;
             --holiday-border: rgba(239, 68, 68, 0.5);
             --holiday-hover: rgba(220, 38, 38, 0.3);
-            
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --today-border: #10b981;
+            --today-bg: rgba(16, 185, 129, 0.1);
             --tooltip-bg: #f8fafc;
             --tooltip-text: #0f172a;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .bangla-text {
-            font-family: 'Tiro Bangla', serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        .bangla-text { font-family: 'Tiro Bangla', serif; }
+        
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem;
+            background-color: var(--bg-color); color: var(--text-main); min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; padding: 1.5rem 1rem;
             transition: background-color 0.3s, color 0.3s;
-            overflow: hidden; /* Prevent full page scroll if possible */
         }
 
-        /* Compact Header */
         header {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border);
-            gap: 1rem;
+            width: 100%; max-width: 1200px; display: flex; flex-direction: row; justify-content: space-between;
+            align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); gap: 1rem;
         }
 
-        .brand-section {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .brand-section img {
-            height: 65px; /* Smaller logo */
-            width: auto;
-            background: #fff; 
-            border-radius: 50%;
-            padding: 3px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header-text-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .motto {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 0.1rem;
-        }
-
-        .title-bn {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--ruet-red);
-            margin-bottom: 0.1rem;
-            letter-spacing: -0.5px;
-        }
-
-        .title-en {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: 0.5px;
-        }
-
-        .header-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
+        .brand-section { display: flex; align-items: center; gap: 1rem; }
+        .brand-section img { height: 65px; width: auto; background: #fff; border-radius: 50%; padding: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header-text-container { display: flex; flex-direction: column; justify-content: center; }
+        .motto { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .title-bn { font-size: 1.6rem; font-weight: 800; color: var(--ruet-red); margin-bottom: 0.1rem; letter-spacing: -0.5px; }
+        .title-en { font-size: 0.95rem; font-weight: 700; color: var(--primary); letter-spacing: 0.5px; }
+        .header-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
 
         button.outline-btn {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            background: var(--surface-color); border: 1px solid var(--border); color: var(--text-main);
+            padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+            transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
+        button.outline-btn svg { width: 16px; height: 16px; }
+        button.outline-btn:hover { background: var(--cell-hover); border-color: var(--text-muted); }
 
-        button.outline-btn svg {
-            width: 16px;
-            height: 16px;
-        }
+        .main-container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: stretch; }
+        
+        .calendar-card { background: var(--surface-color); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+        .calendar-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+        
+        .icon-btn { background: var(--surface-color); border: 1px solid var(--border); border-radius: 6px; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); transition: 0.2s; }
+        .icon-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        button.outline-btn:hover {
-            background: var(--cell-hover);
-            border-color: var(--text-muted);
-        }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; flex-grow: 1; }
+        .day-name { font-weight: 700; font-size: 0.85rem; color: var(--text-muted); padding-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; align-self: end; }
 
-        /* Layout */
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-            align-items: stretch; /* Make both columns same height */
-            height: calc(100vh - 120px); /* Fill remaining space minus header */
-            min-height: 450px;
-        }
-
-        /* Calendar Card */
-        .calendar-card {
-            background: var(--surface-color);
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .calendar-header h2 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .icon-btn {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            color: var(--text-main);
-            transition: 0.2s;
-        }
-
-        .icon-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px; 
-            text-align: center;
-            flex-grow: 1; /* Allow grid to fill space */
-        }
-
-        .day-name {
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            padding-bottom: 0.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            align-self: end;
-        }
-
-        /* COMPACT DATE CELLS (Removed aspect-ratio) */
         .day-cell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 6px; 
-            border: 1px solid var(--border); 
-            cursor: default;
-            position: relative;
-            transition: 0.2s;
-            background-color: var(--surface-color);
-            height: 100%; 
-            min-height: 45px; /* Force small height instead of perfect square */
-            padding: 0.2rem;
+            display: flex; justify-content: center; align-items: center; font-size: 1.05rem; font-weight: 600;
+            border-radius: 6px; border: 1px solid var(--border); cursor: default; position: relative; transition: 0.2s;
+            background-color: var(--surface-color); min-height: 50px; padding: 0.2rem;
         }
 
-        .day-cell.empty {
-            border: none;
-            background: transparent;
-        }
+        .day-cell.empty { border: none; background: transparent; }
+        .day-cell:not(.empty):hover { border-color: var(--primary); background-color: var(--cell-hover); z-index: 2; }
+        .day-cell.weekend { color: var(--weekend-text); background-color: var(--weekend-bg); }
+        .day-cell.holiday { background-color: var(--holiday-bg); color: var(--holiday-text); border: 1.5px solid var(--holiday-border); cursor: pointer; font-weight: 700; }
+        .day-cell.holiday:hover { background-color: var(--holiday-hover); transform: scale(1.03); }
 
-        .day-cell:not(.empty):hover {
-            border-color: var(--primary);
-            background-color: var(--cell-hover);
-            z-index: 2;
+        /* Current Day Highlight Override */
+        .day-cell.current-day {
+            border: 2.5px solid var(--today-border);
+            background-color: var(--today-bg);
+            color: var(--today-border);
+            font-weight: 800;
+            z-index: 1;
         }
-
-        .day-cell.weekend {
-            color: var(--weekend-text);
-            background-color: var(--weekend-bg);
-        }
-
-        .day-cell.holiday {
-            background-color: var(--holiday-bg);
-            color: var(--holiday-text);
-            border: 1.5px solid var(--holiday-border); /* Thicker border for highlight */
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        .day-cell.holiday:hover {
-            background-color: var(--holiday-hover);
-            transform: scale(1.02);
-        }
-
-        /* Tooltip */
+        
         .tooltip {
-            visibility: hidden;
-            background-color: var(--tooltip-bg);
-            color: var(--tooltip-text);
-            text-align: center;
-            border-radius: 6px;
-            padding: 0.5rem 0.75rem;
-            position: absolute;
-            z-index: 10;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            font-size: 0.75rem;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.2s;
-            box-shadow: var(--shadow);
-            pointer-events: none;
+            visibility: hidden; background-color: var(--tooltip-bg); color: var(--tooltip-text); text-align: center;
+            border-radius: 6px; padding: 0.5rem 0.75rem; position: absolute; z-index: 10; bottom: 110%; left: 50%;
+            transform: translateX(-50%); width: max-content; max-width: 220px; white-space: normal; font-size: 0.8rem;
+            font-weight: 600; opacity: 0; transition: opacity 0.2s; box-shadow: var(--shadow); pointer-events: none; line-height: 1.4;
         }
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--tooltip-bg) transparent transparent transparent; }
+        .day-cell.holiday:hover .tooltip { visibility: visible; opacity: 1; }
 
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--tooltip-bg) transparent transparent transparent;
-        }
-
-        .day-cell.holiday:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Holiday Sidebar */
-        .holiday-sidebar {
-            background: var(--surface-color);
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            box-shadow: var(--shadow);
-            height: 100%;
-            overflow-y: auto; /* Scroll inside sidebar if list is long */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .holiday-sidebar h3 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-            color: var(--text-main);
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .holiday-list {
-            list-style: none;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        /* Custom Scrollbar for list */
-        .holiday-list::-webkit-scrollbar { width: 6px; }
+        .holiday-sidebar { background: var(--surface-color); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; max-height: 100%; }
+        .holiday-sidebar h3 { font-size: 1.15rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-main); font-weight: 700; flex-shrink: 0; transition: 0.2s; }
+        .holiday-list { list-style: none; overflow-y: auto; padding-right: 5px; flex-grow: 1; }
+        .holiday-list::-webkit-scrollbar { width: 5px; }
         .holiday-list::-webkit-scrollbar-track { background: transparent; }
-        .holiday-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        .holiday-list::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; }
+        .holiday-item { margin-bottom: 0.8rem; font-size: 0.9rem; padding-left: 0.6rem; border-left: 3px solid var(--holiday-border); background: var(--holiday-bg); padding: 0.5rem 0.5rem 0.5rem 0.75rem; border-radius: 0 6px 6px 0; }
+        .holiday-date { font-weight: 700; color: var(--holiday-text); display: block; margin-bottom: 0.2rem; font-size: 0.8rem; }
+        .holiday-name { color: var(--text-main); line-height: 1.4; font-weight: 600; }
+        .no-holidays { color: var(--text-muted); font-style: italic; font-size: 0.95rem; text-align: center; padding-top: 1rem; }
 
-        .holiday-item {
-            margin-bottom: 0.8rem;
-            font-size: 0.9rem;
-            padding-left: 0.6rem;
-            border-left: 3px solid var(--holiday-border);
-            background: var(--holiday-bg);
-            padding: 0.5rem;
-            border-radius: 0 6px 6px 0;
-        }
-
-        .holiday-date {
-            font-weight: 700;
-            color: var(--holiday-text);
-            display: block;
-            margin-bottom: 0.2rem;
-            font-size: 0.8rem;
-        }
-
-        .holiday-name {
-            color: var(--text-main);
-            line-height: 1.3;
-            font-weight: 600;
-        }
-
-        .no-holidays {
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.9rem;
-            text-align: center;
-            padding-top: 1rem;
-        }
-
-        /* Modals (Unchanged from previous functional version) */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; padding: 1rem; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content {
-            background: var(--surface-color); border-radius: 12px; padding: 2rem;
-            width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto;
-            box-shadow: var(--shadow); position: relative; transform: translateY(-20px); transition: 0.3s;
-        }
+        .modal-content { background: var(--surface-color); border-radius: 12px; padding: 2rem; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; transform: translateY(-20px); transition: 0.3s; }
         .modal-overlay.active .modal-content { transform: translateY(0); }
-        .close-btn {
-            position: sticky; top: -10px; float: right; background: var(--surface-color);
-            border: 1px solid var(--border); border-radius: 50%; width: 30px; height: 30px;
-            font-size: 1.2rem; cursor: pointer; color: var(--text-main); display: flex;
-            align-items: center; justify-content: center; z-index: 10;
-        }
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        .close-btn { position: sticky; top: 0; float: right; background: var(--surface-color); border: 1px solid var(--border); border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; cursor: pointer; color: var(--text-main); display: flex; align-items: center; justify-content: center; z-index: 10; }
         .close-btn:hover { background: var(--holiday-bg); color: var(--holiday-text); border-color: var(--holiday-border); }
-        .modal-content h3 { margin-bottom: 1.5rem; color: var(--primary); font-size: 1.3rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+        
+        .modal-content h3 { margin-bottom: 1.5rem; color: var(--primary); font-size: 1.3rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-top: -10px; }
         .syn-group { margin-bottom: 1.2rem; }
         .syn-role { font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 0.2rem; }
         .syn-name { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
-        .syn-desc { font-size: 0.85rem; color: var(--text-muted); }
+        .syn-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .syn-list { list-style-type: disc; padding-left: 1.5rem; }
-        .syn-list li { margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .syn-list li { margin-bottom: 0.6rem; font-size: 0.95rem; line-height: 1.4;}
 
-        /* Responsive constraints */
-        @media (max-width: 900px) {
-            body { overflow: auto; height: auto; }
-            header { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
-            .header-buttons { justify-content: center; }
-            .main-container { grid-template-columns: 1fr; height: auto; }
-            .calendar-card, .holiday-sidebar { height: auto; }
+        @media (min-width: 1024px) and (min-height: 700px) { body { overflow: hidden; } .main-container { height: calc(100vh - 160px); } }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; gap: 2rem; } .holiday-sidebar { max-height: 400px; } }
+        @media (max-width: 650px) {
+            header { flex-direction: column; text-align: center; gap: 1.25rem; padding-bottom: 1.5rem; }
+            .brand-section { flex-direction: column; gap: 0.75rem; }
+            .header-buttons { justify-content: center; width: 100%; }
+            .title-bn { font-size: 1.4rem; } .title-en { font-size: 0.85rem; }
+            .calendar-card { padding: 1rem; } .day-cell { min-height: 40px; font-size: 0.95rem; } .day-name { font-size: 0.75rem; }
+            .modal-content { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -449,6 +177,13 @@
             </div>
         </div>
         <div class="header-buttons">
+            <button class="outline-btn" id="lang-toggle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 8l6 6"></path><path d="M4 14l6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path>
+                    <path d="M22 22l-5-10-5 10"></path><path d="M14 18h6"></path>
+                </svg>
+                <span id="lang-text">EN / বাংলা</span>
+            </button>
             <button class="outline-btn" id="theme-toggle">
                 <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -458,9 +193,7 @@
             <button class="outline-btn" onclick="openModal('syndicateModal')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
                 Syndicate
             </button>
@@ -480,7 +213,7 @@
                 <button class="icon-btn" id="prev-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
-                <h2 id="month-year-display">January 2026</h2>
+                <h2 id="month-year-display"></h2>
                 <button class="icon-btn" id="next-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
                 </button>
@@ -493,99 +226,40 @@
 
         <!-- Holidays Sidebar -->
         <div class="holiday-sidebar">
-            <h3 class="bangla-text">Chutir Talika / ছুটির তালিকা</h3>
+            <h3 id="sidebar-main-title" class="bangla-text">ছুটির তালিকা</h3>
             <ul class="holiday-list" id="sidebar-holidays">
                 <!-- List generated by JS -->
             </ul>
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Modals (Information retained as before) -->
     <div class="modal-overlay" id="syndicateModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('syndicateModal')">&times;</button>
             <h3 class="bangla-text">Syndicate Information / সিন্ডিকেট</h3>
-            
-            <div class="syn-group bangla-text">
-                <div class="syn-role">চ্যান্সেলর</div>
-                <div class="syn-name">মোঃ সাহাবুদ্দিন</div>
-                <div class="syn-desc">মহামান্য রাষ্ট্রপতি, গণপ্রজাতন্ত্রী বাংলাদেশ</div>
-            </div>
-
-            <div class="syn-group bangla-text">
-                <div class="syn-role">ভাইস-চ্যান্সেলর</div>
-                <div class="syn-name">প্রফেসর ড. এস এম আব্দুর রাজ্জাক</div>
-            </div>
-
-            <div class="syn-group bangla-text">
-                <div class="syn-role">সিন্ডিকেট চেয়ারম্যান</div>
-                <div class="syn-name">প্রফেসর ড. এস এম আব্দুর রাজ্জাক</div>
-                <div class="syn-desc">ভাইস-চ্যান্সেলর, রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</div>
-            </div>
-
+            <div class="syn-group bangla-text"><div class="syn-role">চ্যান্সেলর</div><div class="syn-name">মোঃ সাহাবুদ্দিন</div><div class="syn-desc">মহামান্য রাষ্ট্রপতি, গণপ্রজাতন্ত্রী বাংলাদেশ</div></div>
+            <div class="syn-group bangla-text"><div class="syn-role">ভাইস-চ্যান্সেলর</div><div class="syn-name">প্রফেসর ড. এস এম আব্দুর রাজ্জাক</div></div>
+            <div class="syn-group bangla-text"><div class="syn-role">সিন্ডিকেট চেয়ারম্যান</div><div class="syn-name">প্রফেসর ড. এস এম আব্দুর রাজ্জাক</div><div class="syn-desc">ভাইস-চ্যান্সেলর, রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</div></div>
             <div class="syn-group bangla-text">
                 <div class="syn-role">সদস্য</div>
                 <ul class="syn-list">
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. বশির আহমেদ</span><br>
-                        <span class="syn-desc">ডিন, ফ্যাকাল্টি অব ইলেকট্রিক্যাল এন্ড কম্পিউটার ইঞ্জিনিয়ারিং, রুয়েট</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. মোঃ আব্দুল কাদের জিলানী</span><br>
-                        <span class="syn-desc">ডিন, ফ্যাকাল্টি অব অ্যাপ্লায়েড সায়েন্স এন্ড হিউম্যানিটিজ, রুয়েট</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. এইচ. এম. রাসেল</span><br>
-                        <span class="syn-desc">পরিচালক (পরিকল্পনা ও উন্নয়ন), রুয়েট</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. আব্দুল খালেক</span><br>
-                        <span class="syn-desc">পরিচালক (গবেষণা ও সম্প্রসারণ), রুয়েট</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">অতিরিক্ত সচিব (মাধ্যমিক-১)</span><br>
-                        <span class="syn-desc">মাধ্যমিক ও উচ্চ শিক্ষা বিভাগ, শিক্ষা মন্ত্রণালয়, ঢাকা</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">জনাব মাহবুব জামান</span><br>
-                        <span class="syn-desc">ব্যবস্থাপনা পরিচালক, ডাটা সফট সিস্টেমস বাংলাদেশ লিমিটেড</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রকৌশলী শেখ মোঃ আলাউদ্দীন</span><br>
-                        <span class="syn-desc">সদস্য বিতরণ (অবঃ), বাংলাদেশ বিদ্যুৎ উন্নয়ন বোর্ড, ঢাকা</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">বিভাগীয় কমিশনার</span><br>
-                        <span class="syn-desc">রাজশাহী</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. আবদুল মান্নান</span><br>
-                        <span class="syn-desc">আন্তর্জাতিক সম্পর্ক বিভাগ, ঢাকা বিশ্ববিদ্যালয়, ঢাকা</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. মো: সাব্বির মোস্তফা খান</span><br>
-                        <span class="syn-desc">পানি সম্পদ কৌশল বিভাগ, বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয়, ঢাকা</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর এম রফিকুল ইসলাম</span><br>
-                        <span class="syn-desc">অবসরপ্রাপ্ত অধ্যাপক (অর্থনীতি বিভাগ), রাজশাহী বিশ্ববিদ্যালয়</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">চেয়ারম্যান</span><br>
-                        <span class="syn-desc">মাধ্যমিক ও উচ্চ মাধ্যমিক শিক্ষা বোর্ড, রাজশাহী</span>
-                    </li>
-                    <li>
-                        <span class="syn-name">প্রফেসর ড. মোঃ আশরাফুল আলম</span><br>
-                        <span class="syn-desc">রসায়ন বিভাগ, রুয়েট</span>
-                    </li>
+                    <li><span class="syn-name">প্রফেসর ড. বশির আহমেদ</span><br><span class="syn-desc">ডিন, ফ্যাকাল্টি অব ইলেকট্রিক্যাল এন্ড কম্পিউটার ইঞ্জিনিয়ারিং, রুয়েট</span></li>
+                    <li><span class="syn-name">প্রফেসর ড. মোঃ আব্দুল কাদের জিলানী</span><br><span class="syn-desc">ডিন, ফ্যাকাল্টি অব অ্যাপ্লায়েড সায়েন্স এন্ড হিউম্যানিটিজ, রুয়েট</span></li>
+                    <li><span class="syn-name">প্রফেসর ড. এইচ. এম. রাসেল</span><br><span class="syn-desc">পরিচালক (পরিকল্পনা ও উন্নয়ন), রুয়েট</span></li>
+                    <li><span class="syn-name">প্রফেসর ড. আব্দুল খালেক</span><br><span class="syn-desc">পরিচালক (গবেষণা ও সম্প্রসারণ), রুয়েট</span></li>
+                    <li><span class="syn-name">অতিরিক্ত সচিব (মাধ্যমিক-১)</span><br><span class="syn-desc">মাধ্যমিক ও উচ্চ শিক্ষা বিভাগ, শিক্ষা মন্ত্রণালয়, ঢাকা</span></li>
+                    <li><span class="syn-name">জনাব মাহবুব জামান</span><br><span class="syn-desc">ব্যবস্থাপনা পরিচালক, ডাটা সফট সিস্টেমস বাংলাদেশ লিমিটেড</span></li>
+                    <li><span class="syn-name">প্রকৌশলী শেখ মোঃ আলাউদ্দীন</span><br><span class="syn-desc">সদস্য বিতরণ (অবঃ), বাংলাদেশ বিদ্যুৎ উন্নয়ন বোর্ড, ঢাকা</span></li>
+                    <li><span class="syn-name">বিভাগীয় কমিশনার</span><br><span class="syn-desc">রাজশাহী</span></li>
+                    <li><span class="syn-name">প্রফেসর ড. আবদুল মান্নান</span><br><span class="syn-desc">আন্তর্জাতিক সম্পর্ক বিভাগ, ঢাকা বিশ্ববিদ্যালয়, ঢাকা</span></li>
+                    <li><span class="syn-name">প্রফেসর ড. মো: সাব্বির মোস্তফা খান</span><br><span class="syn-desc">পানি সম্পদ কৌশল বিভাগ, বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয়, ঢাকা</span></li>
+                    <li><span class="syn-name">প্রফেসর এম রফিকুল ইসলাম</span><br><span class="syn-desc">অবসরপ্রাপ্ত অধ্যাপক (অর্থনীতি বিভাগ), রাজশাহী বিশ্ববিদ্যালয়</span></li>
+                    <li><span class="syn-name">চেয়ারম্যান</span><br><span class="syn-desc">মাধ্যমিক ও উচ্চ মাধ্যমিক শিক্ষা বোর্ড, রাজশাহী</span></li>
+                    <li><span class="syn-name">প্রফেসর ড. মোঃ আশরাফুল আলম</span><br><span class="syn-desc">রসায়ন বিভাগ, রুয়েট</span></li>
                 </ul>
             </div>
-
-            <div class="syn-group bangla-text">
-                <div class="syn-role">সচিব</div>
-                <div class="syn-name">জনাব আরিফ আহম্মদ চৌধুরী</div>
-                <div class="syn-desc">রেজিস্ট্রার (ভারপ্রাপ্ত), রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</div>
-            </div>
+            <div class="syn-group bangla-text"><div class="syn-role">সচিব</div><div class="syn-name">জনাব আরিফ আহম্মদ চৌধুরী</div><div class="syn-desc">রেজিস্ট্রার (ভারপ্রাপ্ত), রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</div></div>
         </div>
     </div>
 
@@ -610,65 +284,68 @@
     </div>
 
     <script>
+        // Updated Data Structure with split languages
         const holidaysData = [
-            { start: '2026-01-17', end: '2026-01-17', name: 'Shab-e-Meraj / শব-ই-মিরাজ' },
-            { start: '2026-01-23', end: '2026-01-23', name: 'Saraswati Puja / শ্রী শ্রী সরস্বতী পূজা' },
-            { start: '2026-02-04', end: '2026-02-04', name: 'Shab-e-Barat / শব-ই-বরাত' },
-            { start: '2026-02-19', end: '2026-03-20', name: 'Ramadan Vacation / পবিত্র রমজানের অবকাশ' },
-            { start: '2026-02-21', end: '2026-02-21', name: 'Shaheed Day & Int. Mother Language Day / শহিদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস' },
-            { start: '2026-03-14', end: '2026-03-25', name: 'Eid-ul-Fitr / ঈদ-উল-ফিতর' },
-            { start: '2026-03-17', end: '2026-03-17', name: 'Shab-e-Qadr / শব-ই-কদর' },
-            { start: '2026-03-20', end: '2026-03-20', name: 'Jumatul Bida / জুমাতুল বিদা' },
-            { start: '2026-03-26', end: '2026-03-26', name: 'Independence Day / স্বাধীনতা ও জাতীয় দিবস' },
-            { start: '2026-04-14', end: '2026-04-14', name: 'Bengali New Year / বাংলা নববর্ষ' },
-            { start: '2026-05-01', end: '2026-05-01', name: 'May Day / মে দিবস' },
-            { start: '2026-05-01', end: '2026-05-01', name: 'Buddha Purnima / বুদ্ধ পূর্ণিমা' }, 
-            { start: '2026-05-21', end: '2026-05-25', name: 'Summer Vacation / গ্রীষ্মকালীন ছুটি' }, 
-            { start: '2026-05-26', end: '2026-06-03', name: 'Eid-ul-Adha / ঈদ-উল-আযহা' },
-            { start: '2026-06-26', end: '2026-06-26', name: 'Ashura / মুহাররম (আশুরা)' },
-            { start: '2026-08-05', end: '2026-08-05', name: 'July Mass Uprising Day / জুলাই গণঅভ্যুত্থান দিবস' },
-            { start: '2026-08-12', end: '2026-08-12', name: 'Akheri Chahar Somba / আখেরী চাহার সোম্বা' },
-            { start: '2026-08-26', end: '2026-08-26', name: 'Eid-e-Miladunnabi / ঈদ-ই-মিলাদুন্নবী' },
-            { start: '2026-09-01', end: '2026-09-01', name: 'University Day / বিশ্ববিদ্যালয় দিবস' },
-            { start: '2026-09-04', end: '2026-09-04', name: 'Janmashtami / জন্মাষ্টমী' },
-            { start: '2026-09-24', end: '2026-09-24', name: 'Fateha-e-Yazdaham / ফাতেহা-ই-ইয়াজদাহম' },
-            { start: '2026-10-17', end: '2026-10-21', name: 'Durga Puja / দূর্গা পূজা' },
-            { start: '2026-12-14', end: '2026-12-14', name: 'Martyred Intellectuals Day / শহিদ বুদ্ধিজীবী দিবস' },
-            { start: '2026-12-16', end: '2026-12-16', name: 'Victory Day / বিজয় দিবস' },
-            { start: '2026-12-19', end: '2026-12-23', name: 'Winter Vacation / শীতকালীন ছুটি' },
-            { start: '2026-12-25', end: '2026-12-25', name: 'Christmas Day / বড়দিন' }
+            { start: '2026-01-17', end: '2026-01-17', nameEn: 'Shab-e-Meraj', nameBn: 'শব-ই-মিরাজ' },
+            { start: '2026-01-23', end: '2026-01-23', nameEn: 'Saraswati Puja', nameBn: 'শ্রী শ্রী সরস্বতী পূজা' },
+            { start: '2026-02-04', end: '2026-02-04', nameEn: 'Shab-e-Barat', nameBn: 'শব-ই-বরাত' },
+            { start: '2026-02-19', end: '2026-03-20', nameEn: 'Ramadan Vacation', nameBn: 'পবিত্র রমজানের অবকাশ' },
+            { start: '2026-02-21', end: '2026-02-21', nameEn: 'Shaheed Day & Int. Mother Language Day', nameBn: 'শহিদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস' },
+            { start: '2026-03-14', end: '2026-03-25', nameEn: 'Eid-ul-Fitr', nameBn: 'ঈদ-উল-ফিতর' },
+            { start: '2026-03-17', end: '2026-03-17', nameEn: 'Shab-e-Qadr', nameBn: 'শব-ই-কদর' },
+            { start: '2026-03-20', end: '2026-03-20', nameEn: 'Jumatul Bida', nameBn: 'জুমাতুল বিদা' },
+            { start: '2026-03-26', end: '2026-03-26', nameEn: 'Independence Day', nameBn: 'স্বাধীনতা ও জাতীয় দিবস' },
+            { start: '2026-04-14', end: '2026-04-14', nameEn: 'Bengali New Year', nameBn: 'বাংলা নববর্ষ' },
+            { start: '2026-05-01', end: '2026-05-01', nameEn: 'May Day', nameBn: 'মে দিবস' },
+            { start: '2026-05-01', end: '2026-05-01', nameEn: 'Buddha Purnima', nameBn: 'বুদ্ধ পূর্ণিমা' }, 
+            { start: '2026-05-21', end: '2026-05-25', nameEn: 'Summer Vacation', nameBn: 'গ্রীষ্মকালীন ছুটি' }, 
+            { start: '2026-05-26', end: '2026-06-03', nameEn: 'Eid-ul-Adha', nameBn: 'ঈদ-উল-আযহা' },
+            { start: '2026-06-26', end: '2026-06-26', nameEn: 'Ashura', nameBn: 'মুহাররম (আশুরা)' },
+            { start: '2026-08-05', end: '2026-08-05', nameEn: 'July Mass Uprising Day', nameBn: 'জুলাই গণঅভ্যুত্থান দিবস' },
+            { start: '2026-08-12', end: '2026-08-12', nameEn: 'Akheri Chahar Somba', nameBn: 'আখেরী চাহার সোম্বা' },
+            { start: '2026-08-26', end: '2026-08-26', nameEn: 'Eid-e-Miladunnabi', nameBn: 'ঈদ-ই-মিলাদুন্নবী' },
+            { start: '2026-09-01', end: '2026-09-01', nameEn: 'University Day', nameBn: 'বিশ্ববিদ্যালয় দিবস' },
+            { start: '2026-09-04', end: '2026-09-04', nameEn: 'Janmashtami', nameBn: 'জন্মাষ্টমী' },
+            { start: '2026-09-24', end: '2026-09-24', nameEn: 'Fateha-e-Yazdaham', nameBn: 'ফাতেহা-ই-ইয়াজদাহম' },
+            { start: '2026-10-17', end: '2026-10-21', nameEn: 'Durga Puja', nameBn: 'দূর্গা পূজা' },
+            { start: '2026-12-14', end: '2026-12-14', nameEn: 'Martyred Intellectuals Day', nameBn: 'শহিদ বুদ্ধিজীবী দিবস' },
+            { start: '2026-12-16', end: '2026-12-16', nameEn: 'Victory Day', nameBn: 'বিজয় দিবস' },
+            { start: '2026-12-19', end: '2026-12-23', nameEn: 'Winter Vacation', nameBn: 'শীতকালীন ছুটি' },
+            { start: '2026-12-25', end: '2026-12-25', nameEn: 'Christmas Day', nameBn: 'বড়দিন' }
         ];
 
-        let currentMonth = 0; // January is 0
-        const currentYear = 2026;
+        // Language State
+        let currentLang = localStorage.getItem('lang') || 'bn'; // Default to Bangla
+
+        // Date State
+        const todayDateObj = new Date();
+        const systemYear = todayDateObj.getFullYear();
+        const systemMonth = todayDateObj.getMonth();
+        const systemDay = todayDateObj.getDate();
+
+        let currentYear = 2026;
+        let currentMonth = (systemYear === 2026) ? systemMonth : 0; 
+
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
         const gridEl = document.getElementById('calendar-grid');
         const monthDisplayEl = document.getElementById('month-year-display');
         const sidebarHolidaysEl = document.getElementById('sidebar-holidays');
+        const sidebarTitleEl = document.getElementById('sidebar-main-title');
 
-        // Theme Toggle Logic
+        // Theme Logic
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
-        const themeText = document.getElementById('theme-text');
-        
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         let isDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
 
-        if (isDarkMode) {
-            document.body.classList.add('dark-mode');
-            updateThemeUI(true);
-        }
+        if (isDarkMode) { document.body.classList.add('dark-mode'); updateThemeUI(true); }
 
         themeToggleBtn.addEventListener('click', () => {
             isDarkMode = !isDarkMode;
-            if (isDarkMode) {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
+            if (isDarkMode) { document.body.classList.add('dark-mode'); } else { document.body.classList.remove('dark-mode'); }
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
             updateThemeUI(isDarkMode);
         });
@@ -681,28 +358,42 @@
             }
         }
 
+        // Language Logic
+        const langToggleBtn = document.getElementById('lang-toggle');
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'bn' ? 'en' : 'bn';
+            localStorage.setItem('lang', currentLang);
+            renderCalendar(currentMonth, currentYear); // Re-render to update text
+        });
+
+        function updateLangUI() {
+            if (currentLang === 'bn') {
+                sidebarTitleEl.innerText = "ছুটির তালিকা";
+                sidebarTitleEl.classList.add('bangla-text');
+            } else {
+                sidebarTitleEl.innerText = "Holiday List";
+                sidebarTitleEl.classList.remove('bangla-text');
+            }
+        }
+
         function getHolidaysForDate(dateStr) {
             let activeHolidays = [];
             const targetDate = new Date(dateStr);
-            
             holidaysData.forEach(h => {
-                const start = new Date(h.start);
-                const end = new Date(h.end);
-                if (targetDate >= start && targetDate <= end) {
-                    activeHolidays.push(h.name);
-                }
+                const start = new Date(h.start); const end = new Date(h.end);
+                if (targetDate >= start && targetDate <= end) { activeHolidays.push(h); }
             });
             return activeHolidays;
         }
 
         function renderCalendar(month, year) {
+            updateLangUI(); // Update static text
             gridEl.innerHTML = '';
             monthDisplayEl.innerText = `${monthNames[month]} ${year}`;
 
             dayNames.forEach(day => {
                 const el = document.createElement('div');
-                el.classList.add('day-name');
-                el.innerText = day;
+                el.classList.add('day-name'); el.innerText = day;
                 gridEl.appendChild(el);
             });
 
@@ -719,11 +410,15 @@
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const cell = document.createElement('div');
-                cell.classList.add('day-cell');
-                cell.innerText = day;
+                cell.classList.add('day-cell'); cell.innerText = day;
 
                 const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
+                // Highlight Current Day
+                if (year === systemYear && month === systemMonth && day === systemDay) {
+                    cell.classList.add('current-day');
+                }
+
                 const currentDayOfWeek = new Date(year, month, day).getDay();
                 if (currentDayOfWeek === 4 || currentDayOfWeek === 5) {
                     cell.classList.add('weekend');
@@ -732,17 +427,21 @@
                 const activeHolidays = getHolidaysForDate(dateString);
                 if (activeHolidays.length > 0) {
                     cell.classList.add('holiday');
-                    
                     const tooltip = document.createElement('span');
-                    tooltip.classList.add('tooltip', 'bangla-text');
-                    tooltip.innerHTML = activeHolidays.join('<br><br>');
+                    tooltip.classList.add('tooltip');
+                    
+                    if (currentLang === 'bn') tooltip.classList.add('bangla-text');
+                    
+                    // Display correct language in tooltip
+                    tooltip.innerHTML = activeHolidays.map(h => currentLang === 'bn' ? h.nameBn : h.nameEn).join('<br><br>');
                     cell.appendChild(tooltip);
 
-                    activeHolidays.forEach(name => {
-                        monthHolidays.add({
-                            dateStr: dateString,
-                            dayNum: day,
-                            name: name
+                    activeHolidays.forEach(holidayObj => {
+                        monthHolidays.add({ 
+                            dateStr: dateString, 
+                            dayNum: day, 
+                            nameEn: holidayObj.nameEn,
+                            nameBn: holidayObj.nameBn 
                         });
                     });
                 }
@@ -755,74 +454,50 @@
 
         function renderSidebarList(holidaySet, monthIndex) {
             sidebarHolidaysEl.innerHTML = '';
-            
-            let uniqueList = [];
-            let seenNames = [];
+            let uniqueList = []; let seenNames = [];
             let sortedHolidays = Array.from(holidaySet).sort((a, b) => a.dayNum - b.dayNum);
 
             sortedHolidays.forEach(item => {
-                if(!seenNames.includes(item.name)) {
-                    seenNames.push(item.name);
-                    
-                    const fullHolidayDef = holidaysData.find(h => h.name === item.name);
+                if(!seenNames.includes(item.nameEn)) {
+                    seenNames.push(item.nameEn);
+                    const fullHolidayDef = holidaysData.find(h => h.nameEn === item.nameEn);
                     let displayDate = "";
                     
                     if(fullHolidayDef.start === fullHolidayDef.end) {
                         displayDate = `${monthNames[monthIndex]} ${parseInt(fullHolidayDef.start.split('-')[2])}`;
                     } else {
-                        const startD = new Date(fullHolidayDef.start);
-                        const endD = new Date(fullHolidayDef.end);
+                        const startD = new Date(fullHolidayDef.start); const endD = new Date(fullHolidayDef.end);
                         displayDate = `${monthNames[startD.getMonth()]} ${startD.getDate()} - ${monthNames[endD.getMonth()]} ${endD.getDate()}`;
                     }
+
+                    const displayName = currentLang === 'bn' ? item.nameBn : item.nameEn;
+                    const fontClass = currentLang === 'bn' ? 'bangla-text' : '';
 
                     uniqueList.push(`
                         <li class="holiday-item">
                             <span class="holiday-date">${displayDate}</span>
-                            <span class="holiday-name bangla-text">${item.name}</span>
+                            <span class="holiday-name ${fontClass}">${displayName}</span>
                         </li>
                     `);
                 }
             });
 
             if (uniqueList.length === 0) {
-                sidebarHolidaysEl.innerHTML = '<li class="no-holidays">No holidays this month.</li>';
+                const noHolidaysText = currentLang === 'bn' ? 'এই মাসে কোনো ছুটি নেই।' : 'No holidays this month.';
+                sidebarHolidaysEl.innerHTML = `<li class="no-holidays ${currentLang === 'bn' ? 'bangla-text' : ''}">${noHolidaysText}</li>`;
             } else {
                 sidebarHolidaysEl.innerHTML = uniqueList.join('');
             }
         }
 
-        document.getElementById('prev-btn').addEventListener('click', () => {
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-            }
-            renderCalendar(currentMonth, currentYear);
-        });
+        document.getElementById('prev-btn').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; } renderCalendar(currentMonth, currentYear); });
+        document.getElementById('next-btn').addEventListener('click', () => { currentMonth++; if (currentMonth > 11) { currentMonth = 0; } renderCalendar(currentMonth, currentYear); });
 
-        document.getElementById('next-btn').addEventListener('click', () => {
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-            }
-            renderCalendar(currentMonth, currentYear);
-        });
-
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                event.target.classList.remove('active');
-            }
-        }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) { event.target.classList.remove('active'); } }
 
         renderCalendar(currentMonth, currentYear);
-
     </script>
 </body>
 </html>
