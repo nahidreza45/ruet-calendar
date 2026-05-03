@@ -23,8 +23,6 @@
             --holiday-text: #b91c1c;
             --holiday-border: #fca5a5;
             --holiday-hover: #fecaca;
-            --today-border: #047857;
-            --today-bg: #ecfdf5;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --tooltip-bg: #0f172a;
             --tooltip-text: #ffffff;
@@ -46,8 +44,6 @@
             --holiday-text: #fca5a5;
             --holiday-border: rgba(239, 68, 68, 0.5);
             --holiday-hover: rgba(220, 38, 38, 0.3);
-            --today-border: #10b981;
-            --today-bg: rgba(16, 185, 129, 0.1);
             --tooltip-bg: #f8fafc;
             --tooltip-text: #0f172a;
         }
@@ -64,6 +60,7 @@
         header {
             width: 100%; max-width: 1200px; display: flex; flex-direction: row; justify-content: space-between;
             align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); gap: 1rem;
+            position: relative;
         }
 
         .brand-section { display: flex; align-items: center; gap: 1rem; }
@@ -72,7 +69,11 @@
         .motto { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem; }
         .title-bn { font-size: 1.6rem; font-weight: 800; color: var(--ruet-red); margin-bottom: 0.1rem; letter-spacing: -0.5px; }
         .title-en { font-size: 0.95rem; font-weight: 700; color: var(--primary); letter-spacing: 0.5px; }
+        
         .header-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+        
+        /* Mobile Nav Elements (Hidden on Desktop) */
+        .hamburger-btn, .mobile-close-btn, .menu-backdrop { display: none; }
 
         button.outline-btn {
             background: var(--surface-color); border: 1px solid var(--border); color: var(--text-main);
@@ -106,15 +107,34 @@
         .day-cell.holiday { background-color: var(--holiday-bg); color: var(--holiday-text); border: 1.5px solid var(--holiday-border); cursor: pointer; font-weight: 700; }
         .day-cell.holiday:hover { background-color: var(--holiday-hover); transform: scale(1.03); }
 
-        /* Current Day Highlight Override */
+        /* CURRENT DAY HIGHLIGHT - Filled Color Logic */
         .day-cell.current-day {
-            border: 2.5px solid var(--today-border);
-            background-color: var(--today-bg);
-            color: var(--today-border);
+            background-color: var(--primary);
+            color: #ffffff !important; /* Force white text */
+            border: none;
             font-weight: 800;
             z-index: 1;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
         }
         
+        /* If today is a weekend */
+        .day-cell.weekend.current-day {
+            background-color: var(--weekend-text);
+        }
+        
+        /* If today is a holiday */
+        .day-cell.holiday.current-day {
+            background-color: var(--holiday-text);
+            border: none;
+        }
+
+        /* Dark Mode specifically needs a slightly brighter red for high contrast with white text */
+        body.dark-mode .day-cell.weekend.current-day,
+        body.dark-mode .day-cell.holiday.current-day {
+            background-color: #ef4444; 
+        }
+        
+        /* Tooltips */
         .tooltip {
             visibility: hidden; background-color: var(--tooltip-bg); color: var(--tooltip-text); text-align: center;
             border-radius: 6px; padding: 0.5rem 0.75rem; position: absolute; z-index: 10; bottom: 110%; left: 50%;
@@ -135,6 +155,7 @@
         .holiday-name { color: var(--text-main); line-height: 1.4; font-weight: 600; }
         .no-holidays { color: var(--text-muted); font-style: italic; font-size: 0.95rem; text-align: center; padding-top: 1rem; }
 
+        /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; padding: 1rem; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--surface-color); border-radius: 12px; padding: 2rem; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; transform: translateY(-20px); transition: 0.3s; }
@@ -153,13 +174,50 @@
         .syn-list { list-style-type: disc; padding-left: 1.5rem; }
         .syn-list li { margin-bottom: 0.6rem; font-size: 0.95rem; line-height: 1.4;}
 
+        /* Desktop specific */
         @media (min-width: 1024px) and (min-height: 700px) { body { overflow: hidden; } .main-container { height: calc(100vh - 160px); } }
         @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; gap: 2rem; } .holiday-sidebar { max-height: 400px; } }
+        
+        /* Mobile Layout & Hamburger Menu */
         @media (max-width: 650px) {
-            header { flex-direction: column; text-align: center; gap: 1.25rem; padding-bottom: 1.5rem; }
+            header { flex-direction: column; text-align: center; gap: 1.25rem; padding-bottom: 1.5rem; padding-top: 2rem; border-bottom: none; }
             .brand-section { flex-direction: column; gap: 0.75rem; }
-            .header-buttons { justify-content: center; width: 100%; }
             .title-bn { font-size: 1.4rem; } .title-en { font-size: 0.85rem; }
+            
+            /* Hamburger Button */
+            .hamburger-btn { 
+                display: flex; position: absolute; top: 0rem; left: 0rem; 
+                background: transparent; border: none; color: var(--text-main); 
+                cursor: pointer; align-items: center; justify-content: center; 
+                width: 45px; height: 45px; z-index: 10;
+            }
+            .hamburger-btn svg { width: 28px; height: 28px; }
+            
+            /* Dimmed Backdrop for Menu */
+            .menu-backdrop { 
+                display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.6); z-index: 998; opacity: 0; pointer-events: none; transition: 0.3s; 
+            }
+            .menu-backdrop.open { opacity: 1; pointer-events: auto; }
+            
+            /* Slide-out Sidebar Menu */
+            .header-buttons { 
+                position: fixed; top: 0; left: -260px; width: 250px; height: 100vh; 
+                background: var(--surface-color); flex-direction: column; justify-content: flex-start; 
+                align-items: stretch; padding: 4rem 1.5rem 2rem 1.5rem; box-shadow: var(--shadow); 
+                transition: left 0.3s ease; z-index: 999; margin: 0; border-top: none; gap: 1rem; 
+            }
+            .header-buttons.open { left: 0; }
+            
+            /* Close Button inside Menu */
+            .mobile-close-btn { 
+                display: block; position: absolute; top: 1rem; right: 1rem; 
+                background: transparent; border: none; font-size: 2.5rem; 
+                color: var(--text-muted); cursor: pointer; line-height: 1; 
+            }
+
+            button.outline-btn { justify-content: flex-start; padding: 0.85rem 1rem; font-size: 1rem; }
+
             .calendar-card { padding: 1rem; } .day-cell { min-height: 40px; font-size: 0.95rem; } .day-name { font-size: 0.75rem; }
             .modal-content { padding: 1.5rem; }
         }
@@ -167,7 +225,15 @@
 </head>
 <body>
 
+    <div class="menu-backdrop" id="menu-backdrop"></div>
+
     <header>
+        <button class="hamburger-btn" id="menu-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M3 12h18M3 6h18M3 18h18"></path>
+            </svg>
+        </button>
+
         <div class="brand-section">
             <img src="https://images.seeklogo.com/logo-png/32/1/rajshahi-university-of-engineering-teachnology-logo-png_seeklogo-327582.png" alt="RUET Logo">
             <div class="header-text-container">
@@ -176,7 +242,9 @@
                 <h2 class="title-en">RAJSHAHI UNIVERSITY OF ENGINEERING & TECHNOLOGY</h2>
             </div>
         </div>
-        <div class="header-buttons">
+
+        <div class="header-buttons" id="nav-buttons">
+            <button class="mobile-close-btn" id="mobile-close-btn">&times;</button>
             <button class="outline-btn" id="lang-toggle">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M5 8l6 6"></path><path d="M4 14l6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path>
@@ -207,7 +275,6 @@
     </header>
 
     <div class="main-container">
-        <!-- Calendar Section -->
         <div class="calendar-card">
             <div class="calendar-header">
                 <button class="icon-btn" id="prev-btn">
@@ -220,20 +287,16 @@
             </div>
             
             <div class="calendar-grid" id="calendar-grid">
-                <!-- Days will be generated by JS -->
-            </div>
+                </div>
         </div>
 
-        <!-- Holidays Sidebar -->
         <div class="holiday-sidebar">
             <h3 id="sidebar-main-title" class="bangla-text">ছুটির তালিকা</h3>
             <ul class="holiday-list" id="sidebar-holidays">
-                <!-- List generated by JS -->
-            </ul>
+                </ul>
         </div>
     </div>
 
-    <!-- Modals (Information retained as before) -->
     <div class="modal-overlay" id="syndicateModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('syndicateModal')">&times;</button>
@@ -284,7 +347,6 @@
     </div>
 
     <script>
-        // Updated Data Structure with split languages
         const holidaysData = [
             { start: '2026-01-17', end: '2026-01-17', nameEn: 'Shab-e-Meraj', nameBn: 'শব-ই-মিরাজ' },
             { start: '2026-01-23', end: '2026-01-23', nameEn: 'Saraswati Puja', nameBn: 'শ্রী শ্রী সরস্বতী পূজা' },
@@ -314,8 +376,7 @@
             { start: '2026-12-25', end: '2026-12-25', nameEn: 'Christmas Day', nameBn: 'বড়দিন' }
         ];
 
-        // Language State
-        let currentLang = localStorage.getItem('lang') || 'bn'; // Default to Bangla
+        let currentLang = localStorage.getItem('lang') || 'bn';
 
         // Date State
         const todayDateObj = new Date();
@@ -333,6 +394,32 @@
         const monthDisplayEl = document.getElementById('month-year-display');
         const sidebarHolidaysEl = document.getElementById('sidebar-holidays');
         const sidebarTitleEl = document.getElementById('sidebar-main-title');
+
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('mobile-close-btn');
+        const headerButtons = document.getElementById('nav-buttons');
+        const menuBackdrop = document.getElementById('menu-backdrop');
+
+        function toggleMobileMenu() {
+            headerButtons.classList.toggle('open');
+            menuBackdrop.classList.toggle('open');
+        }
+
+        menuBtn.addEventListener('click', toggleMobileMenu);
+        closeMenuBtn.addEventListener('click', toggleMobileMenu);
+        menuBackdrop.addEventListener('click', toggleMobileMenu);
+
+        // Close mobile menu when an option is selected
+        const navBtns = headerButtons.querySelectorAll('.outline-btn');
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 650) {
+                    headerButtons.classList.remove('open');
+                    menuBackdrop.classList.remove('open');
+                }
+            });
+        });
 
         // Theme Logic
         const themeToggleBtn = document.getElementById('theme-toggle');
@@ -363,7 +450,7 @@
         langToggleBtn.addEventListener('click', () => {
             currentLang = currentLang === 'bn' ? 'en' : 'bn';
             localStorage.setItem('lang', currentLang);
-            renderCalendar(currentMonth, currentYear); // Re-render to update text
+            renderCalendar(currentMonth, currentYear);
         });
 
         function updateLangUI() {
@@ -387,7 +474,7 @@
         }
 
         function renderCalendar(month, year) {
-            updateLangUI(); // Update static text
+            updateLangUI(); 
             gridEl.innerHTML = '';
             monthDisplayEl.innerText = `${monthNames[month]} ${year}`;
 
@@ -414,35 +501,30 @@
 
                 const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
-                // Highlight Current Day
-                if (year === systemYear && month === systemMonth && day === systemDay) {
-                    cell.classList.add('current-day');
-                }
-
+                // Determine Weekend status first
                 const currentDayOfWeek = new Date(year, month, day).getDay();
                 if (currentDayOfWeek === 4 || currentDayOfWeek === 5) {
                     cell.classList.add('weekend');
                 }
 
+                // Apply current day highlight class
+                if (year === systemYear && month === systemMonth && day === systemDay) {
+                    cell.classList.add('current-day');
+                }
+
+                // Apply holiday status
                 const activeHolidays = getHolidaysForDate(dateString);
                 if (activeHolidays.length > 0) {
                     cell.classList.add('holiday');
                     const tooltip = document.createElement('span');
                     tooltip.classList.add('tooltip');
-                    
                     if (currentLang === 'bn') tooltip.classList.add('bangla-text');
                     
-                    // Display correct language in tooltip
                     tooltip.innerHTML = activeHolidays.map(h => currentLang === 'bn' ? h.nameBn : h.nameEn).join('<br><br>');
                     cell.appendChild(tooltip);
 
                     activeHolidays.forEach(holidayObj => {
-                        monthHolidays.add({ 
-                            dateStr: dateString, 
-                            dayNum: day, 
-                            nameEn: holidayObj.nameEn,
-                            nameBn: holidayObj.nameBn 
-                        });
+                        monthHolidays.add({ dateStr: dateString, dayNum: day, nameEn: holidayObj.nameEn, nameBn: holidayObj.nameBn });
                     });
                 }
 
@@ -495,6 +577,7 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        // Prevent backdrop click from accidentally triggering if we added new backdrops, so target specific classes:
         window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) { event.target.classList.remove('active'); } }
 
         renderCalendar(currentMonth, currentYear);
