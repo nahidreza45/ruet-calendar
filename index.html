@@ -23,6 +23,8 @@
             --holiday-text: #b91c1c;
             --holiday-border: #fca5a5;
             --holiday-hover: #fecaca;
+            --today-border: #047857;
+            --today-bg: #ecfdf5;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --tooltip-bg: #0f172a;
             --tooltip-text: #ffffff;
@@ -44,6 +46,8 @@
             --holiday-text: #fca5a5;
             --holiday-border: rgba(239, 68, 68, 0.5);
             --holiday-hover: rgba(220, 38, 38, 0.3);
+            --today-border: #10b981;
+            --today-bg: rgba(16, 185, 129, 0.1);
             --tooltip-bg: #f8fafc;
             --tooltip-text: #0f172a;
         }
@@ -73,7 +77,7 @@
         .header-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
         
         /* Mobile Nav Elements (Hidden on Desktop) */
-        .hamburger-btn, .mobile-close-btn, .menu-backdrop { display: none; }
+        .hamburger-btn, .mobile-theme-btn, .mobile-close-btn, .menu-backdrop { display: none; }
 
         button.outline-btn {
             background: var(--surface-color); border: 1px solid var(--border); color: var(--text-main);
@@ -110,25 +114,16 @@
         /* CURRENT DAY HIGHLIGHT - Filled Color Logic */
         .day-cell.current-day {
             background-color: var(--primary);
-            color: #ffffff !important; /* Force white text */
+            color: #ffffff !important; 
             border: none;
             font-weight: 800;
             z-index: 1;
             box-shadow: 0 3px 8px rgba(0,0,0,0.2);
         }
         
-        /* If today is a weekend */
-        .day-cell.weekend.current-day {
-            background-color: var(--weekend-text);
-        }
-        
-        /* If today is a holiday */
-        .day-cell.holiday.current-day {
-            background-color: var(--holiday-text);
-            border: none;
-        }
+        .day-cell.weekend.current-day { background-color: var(--weekend-text); }
+        .day-cell.holiday.current-day { background-color: var(--holiday-text); border: none; }
 
-        /* Dark Mode specifically needs a slightly brighter red for high contrast with white text */
         body.dark-mode .day-cell.weekend.current-day,
         body.dark-mode .day-cell.holiday.current-day {
             background-color: #ef4444; 
@@ -146,6 +141,24 @@
 
         .holiday-sidebar { background: var(--surface-color); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; max-height: 100%; }
         .holiday-sidebar h3 { font-size: 1.15rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-main); font-weight: 700; flex-shrink: 0; transition: 0.2s; }
+        
+        /* Weekend Banner CSS */
+        .weekend-banner {
+            background-color: var(--weekend-bg);
+            color: var(--weekend-text);
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+            border: 1px solid var(--holiday-border);
+        }
+        body.dark-mode .weekend-banner { background-color: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
+        
         .holiday-list { list-style: none; overflow-y: auto; padding-right: 5px; flex-grow: 1; }
         .holiday-list::-webkit-scrollbar { width: 5px; }
         .holiday-list::-webkit-scrollbar-track { background: transparent; }
@@ -180,18 +193,30 @@
         
         /* Mobile Layout & Hamburger Menu */
         @media (max-width: 650px) {
-            header { flex-direction: column; text-align: center; gap: 1.25rem; padding-bottom: 1.5rem; padding-top: 2rem; border-bottom: none; }
+            header { flex-direction: column; text-align: center; gap: 1.25rem; padding-bottom: 1.5rem; padding-top: 2.5rem; border-bottom: none; }
             .brand-section { flex-direction: column; gap: 0.75rem; }
             .title-bn { font-size: 1.4rem; } .title-en { font-size: 0.7rem; }
             
             /* Hamburger Button */
             .hamburger-btn { 
-                display: flex; position: absolute; top: 0rem; left: 0rem; 
+                display: flex; position: absolute; top: 0.5rem; left: 0.5rem; 
                 background: transparent; border: none; color: var(--text-main); 
                 cursor: pointer; align-items: center; justify-content: center; 
                 width: 45px; height: 45px; z-index: 10;
             }
             .hamburger-btn svg { width: 28px; height: 28px; }
+
+            /* Mobile Theme Button */
+            .mobile-theme-btn { 
+                display: flex; position: absolute; top: 0.5rem; right: 0.5rem; 
+                background: transparent; border: none; color: var(--text-main); 
+                cursor: pointer; align-items: center; justify-content: center; 
+                width: 45px; height: 45px; z-index: 10;
+            }
+            .mobile-theme-btn svg { width: 28px; height: 28px; }
+
+            /* Hide Desktop Theme Button inside slide-out menu */
+            .desktop-theme-toggle { display: none !important; }
             
             /* Dimmed Backdrop for Menu */
             .menu-backdrop { 
@@ -234,6 +259,12 @@
             </svg>
         </button>
 
+        <button class="mobile-theme-btn" id="mobile-theme-toggle">
+            <svg id="mobile-theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
         <div class="brand-section">
             <img src="https://images.seeklogo.com/logo-png/32/1/rajshahi-university-of-engineering-teachnology-logo-png_seeklogo-327582.png" alt="RUET Logo">
             <div class="header-text-container">
@@ -252,12 +283,14 @@
                 </svg>
                 <span id="lang-text">EN / বাংলা</span>
             </button>
-            <button class="outline-btn" id="theme-toggle">
+            
+            <button class="outline-btn desktop-theme-toggle" id="theme-toggle">
                 <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
                 <span id="theme-text">Theme</span>
             </button>
+            
             <button class="outline-btn" onclick="openModal('syndicateModal')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -292,6 +325,14 @@
 
         <div class="holiday-sidebar">
             <h3 id="sidebar-main-title" class="bangla-text">ছুটির তালিকা</h3>
+            
+            <div class="weekend-banner" id="weekend-banner">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span id="weekend-banner-text" class="bangla-text">সাপ্তাহিক ছুটি: বৃহস্পতিবার ও শুক্রবার</span>
+            </div>
+
             <ul class="holiday-list" id="sidebar-holidays">
                 </ul>
         </div>
@@ -394,6 +435,7 @@
         const monthDisplayEl = document.getElementById('month-year-display');
         const sidebarHolidaysEl = document.getElementById('sidebar-holidays');
         const sidebarTitleEl = document.getElementById('sidebar-main-title');
+        const weekendBannerTextEl = document.getElementById('weekend-banner-text');
 
         // Mobile Menu Logic
         const menuBtn = document.getElementById('menu-btn');
@@ -423,26 +465,33 @@
 
         // Theme Logic
         const themeToggleBtn = document.getElementById('theme-toggle');
+        const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
+        const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+        
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         let isDarkMode = savedTheme === 'dark' || (!savedTheme && prefersDark);
 
         if (isDarkMode) { document.body.classList.add('dark-mode'); updateThemeUI(true); }
 
-        themeToggleBtn.addEventListener('click', () => {
+        function toggleTheme() {
             isDarkMode = !isDarkMode;
             if (isDarkMode) { document.body.classList.add('dark-mode'); } else { document.body.classList.remove('dark-mode'); }
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
             updateThemeUI(isDarkMode);
-        });
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        mobileThemeToggleBtn.addEventListener('click', toggleTheme);
 
         function updateThemeUI(dark) {
-            if (dark) {
-                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
-            } else {
-                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
-            }
+            const svgHTML = dark 
+                ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            
+            if (themeIcon) themeIcon.innerHTML = svgHTML;
+            if (mobileThemeIcon) mobileThemeIcon.innerHTML = svgHTML;
         }
 
         // Language Logic
@@ -453,13 +502,17 @@
             renderCalendar(currentMonth, currentYear);
         });
 
-        function updateLangUI() {
+        function updateStaticUI() {
             if (currentLang === 'bn') {
                 sidebarTitleEl.innerText = "ছুটির তালিকা";
                 sidebarTitleEl.classList.add('bangla-text');
+                weekendBannerTextEl.innerText = "সাপ্তাহিক ছুটি: বৃহস্পতিবার ও শুক্রবার";
+                weekendBannerTextEl.classList.add('bangla-text');
             } else {
                 sidebarTitleEl.innerText = "Holiday List";
                 sidebarTitleEl.classList.remove('bangla-text');
+                weekendBannerTextEl.innerText = "Weekly Holidays: Thursday & Friday";
+                weekendBannerTextEl.classList.remove('bangla-text');
             }
         }
 
@@ -474,7 +527,7 @@
         }
 
         function renderCalendar(month, year) {
-            updateLangUI(); 
+            updateStaticUI(); 
             gridEl.innerHTML = '';
             monthDisplayEl.innerText = `${monthNames[month]} ${year}`;
 
@@ -501,18 +554,15 @@
 
                 const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
-                // Determine Weekend status first
                 const currentDayOfWeek = new Date(year, month, day).getDay();
                 if (currentDayOfWeek === 4 || currentDayOfWeek === 5) {
                     cell.classList.add('weekend');
                 }
 
-                // Apply current day highlight class
                 if (year === systemYear && month === systemMonth && day === systemDay) {
                     cell.classList.add('current-day');
                 }
 
-                // Apply holiday status
                 const activeHolidays = getHolidaysForDate(dateString);
                 if (activeHolidays.length > 0) {
                     cell.classList.add('holiday');
@@ -577,7 +627,6 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        // Prevent backdrop click from accidentally triggering if we added new backdrops, so target specific classes:
         window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) { event.target.classList.remove('active'); } }
 
         renderCalendar(currentMonth, currentYear);
