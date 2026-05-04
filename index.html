@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RUET Academic Calendar 2026</title>
+    <title>RUET Academic Calendar 2026 | রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</title>
+    <meta name="description" content="Official Academic Calendar 2026 for Rajshahi University of Engineering & Technology (RUET). View holidays, weekly off days, and important dates.">
+    <meta property="og:title" content="RUET Academic Calendar 2026">
+    <meta property="og:description" content="Official Academic Calendar 2026 for Rajshahi University of Engineering & Technology (RUET).">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nahidreza45.github.io/ruet-calendar/">
+    <meta name="theme-color" content="#047857">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <style>
@@ -107,6 +113,9 @@
 
         .day-cell.empty { border: none; background: transparent; }
         .day-cell:not(.empty):hover { border-color: var(--primary); background-color: var(--cell-hover); z-index: 2; }
+        .day-cell.current-day:hover { background-color: var(--primary); border-color: var(--primary); filter: brightness(1.12); }
+        .day-cell.weekend.current-day:hover { background-color: var(--weekend-text); border-color: var(--weekend-text); filter: brightness(1.1); }
+        .day-cell.holiday.current-day:hover { background-color: var(--holiday-text); border-color: var(--holiday-text); filter: brightness(1.1); transform: scale(1.03); }
         .day-cell.weekend { color: var(--weekend-text); background-color: var(--weekend-bg); }
         .day-cell.holiday { background-color: var(--holiday-bg); color: var(--holiday-text); border: 1.5px solid var(--holiday-border); cursor: pointer; font-weight: 700; }
         .day-cell.holiday:hover { background-color: var(--holiday-hover); transform: scale(1.03); }
@@ -176,16 +185,49 @@
         .modal-content::-webkit-scrollbar { width: 6px; }
         .modal-content::-webkit-scrollbar-track { background: transparent; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        .close-btn { top: 0; float: right; background: var(--surface-color); border: 1px solid var(--border); border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; cursor: pointer; color: var(--text-main); display: flex; align-items: center; justify-content: center; z-index: 10; }
-        .close-btn:hover { background: var(--holiday-bg); color: var(--holiday-text); border-color: var(--holiday-border); }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        .close-btn:hover { background: var(--holiday-bg); color: var(--holiday-text); border-color: var(--holiday-border); transform: rotate(90deg); }
         
-        .modal-content h3 { margin-bottom: 1.5rem; color: var(--primary); font-size: 1.3rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-top: -10px; }
+        .modal-content h3 { margin-bottom: 1.5rem; color: var(--primary); font-size: 1.3rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; padding-right: 2.5rem; margin-top: 0; }
         .syn-group { margin-bottom: 1.2rem; }
         .syn-role { font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 0.2rem; }
         .syn-name { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
         .syn-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .syn-list { list-style-type: disc; padding-left: 1.5rem; }
         .syn-list li { margin-bottom: 0.6rem; font-size: 0.95rem; line-height: 1.4;}
+
+        /* Contact Links */
+        .contact-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed transparent;
+            transition: border-color 0.2s, opacity 0.2s;
+        }
+        .contact-link:hover { border-bottom-color: var(--primary); opacity: 0.8; }
+
+        /* Active language highlight */
+        .lang-active { font-weight: 800; color: var(--primary); }
+        .lang-inactive { font-weight: 400; color: var(--text-muted); }
 
         /* Desktop specific */
         @media (min-width: 1024px) and (min-height: 700px) { body { overflow: hidden; } .main-container { height: calc(100vh - 160px); } }
@@ -266,7 +308,7 @@
         </button>
 
         <div class="brand-section">
-            <img src="https://images.seeklogo.com/logo-png/32/1/rajshahi-university-of-engineering-teachnology-logo-png_seeklogo-327582.png" alt="RUET Logo">
+            <img src="ruet-logo.png" alt="RUET Logo" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/en/thumb/6/60/RUET_logo.svg/240px-RUET_logo.svg.png';">
             <div class="header-text-container">
                 <p class="motto bangla-text">ঐশী জ্যোতিই আমাদের পথ প্রদর্শক</p>
                 <h1 class="title-bn bangla-text">রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</h1>
@@ -276,29 +318,29 @@
 
         <div class="header-buttons" id="nav-buttons">
             <button class="mobile-close-btn" id="mobile-close-btn">&times;</button>
-            <button class="outline-btn" id="lang-toggle">
+            <button class="outline-btn" id="lang-toggle" aria-label="Toggle language">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M5 8l6 6"></path><path d="M4 14l6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path>
                     <path d="M22 22l-5-10-5 10"></path><path d="M14 18h6"></path>
                 </svg>
-                <span id="lang-text">EN / বাংলা</span>
+                <span id="lang-text"></span>
             </button>
             
-            <button class="outline-btn desktop-theme-toggle" id="theme-toggle">
+            <button class="outline-btn desktop-theme-toggle" id="theme-toggle" aria-label="Toggle theme">
                 <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
                 <span id="theme-text">Theme</span>
             </button>
             
-            <button class="outline-btn" onclick="openModal('syndicateModal')">
+            <button class="outline-btn" onclick="openModal('syndicateModal')" aria-label="View Syndicate members">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
                 Syndicate
             </button>
-            <button class="outline-btn" onclick="openModal('contactModal')">
+            <button class="outline-btn" onclick="openModal('contactModal')" aria-label="View contact information">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
@@ -340,7 +382,8 @@
 
     <div class="modal-overlay" id="syndicateModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('syndicateModal')">&times;</button>
+            <button class="close-btn" onclick="closeModal('syndicateModal')" aria-label="Close Syndicate modal">&times;</button>
+            <h3 class="bangla-text">সিন্ডিকেট</h3>
             <div class="syn-group bangla-text"><div class="syn-role">চ্যান্সেলর</div><div class="syn-name">মোঃ সাহাবুদ্দিন</div><div class="syn-desc">মহামান্য রাষ্ট্রপতি, গণপ্রজাতন্ত্রী বাংলাদেশ</div></div>
             <div class="syn-group bangla-text"><div class="syn-role">ভাইস-চ্যান্সেলর</div><div class="syn-name">প্রফেসর ড. এস এম আব্দুর রাজ্জাক</div></div>
             <div class="syn-group bangla-text"><div class="syn-role">সিন্ডিকেট চেয়ারম্যান</div><div class="syn-name">প্রফেসর ড. এস এম আব্দুর রাজ্জাক</div><div class="syn-desc">ভাইস-চ্যান্সেলর, রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়</div></div>
@@ -368,20 +411,20 @@
 
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
-            <h3 class="bangla-text">Contact / যোগাযোগ</h3>
+            <button class="close-btn" onclick="closeModal('contactModal')" aria-label="Close Contact modal">&times;</button>
+            <h3 class="bangla-text">যোগাযোগ</h3>
             <p class="bangla-text" style="color: var(--text-main); font-weight: 600; margin-bottom: 0.5rem; font-size: 1.1rem;">রেজিস্ট্রার</p>
-            <p class="bangla-text" style="color: var(--text-muted); line-height: 1.8; font-size: 1rem;">
+            <p class="bangla-text" style="color: var(--text-muted); line-height: 2; font-size: 1rem;">
                 রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়<br>
                 রাজশাহী-৬২০৪, বাংলাদেশ।<br><br>
-                <strong style="color: var(--primary);">ফ্যাক্স:</strong> +৮৮-০২৫৮৮৮-৬৯১০৫<br>
-                <strong style="color: var(--primary);">ফোন:</strong> +৮৮-০২৫৮৮৮-৬৬৭৯৮<br>
-                <strong style="color: var(--primary);">ওয়েবসাইট:</strong> www.ruet.ac.bd<br>
-                <strong style="color: var(--primary);">ই-মেইল:</strong> registrar@ruet.ac.bd<br>
-                <strong style="color: var(--primary);">জনসংযোগ:</strong> +৮৮-০১৭১৫-১৩৭৭৮০<br>
-                <strong style="color: var(--primary);">ছাত্র কল্যাণ:</strong> +৮৮-০১৭৭৭-৭৮৫৭৫৬<br>
-                <strong style="color: var(--primary);">মেডিকেল সেন্টার:</strong> +৮৮-০১৯১৫-৯৯৭৬৬২<br>
-                <strong style="color: var(--primary);">সিকিউরিটি:</strong> +৮৮-০১৭১৪-৫০৫২৬০
+                <strong style="color: var(--primary);">ফ্যাক্স:</strong> <a class="contact-link" href="tel:+8802588869105">০২৫৮৮৮-৬৯১০৫</a><br>
+                <strong style="color: var(--primary);">ফোন:</strong> <a class="contact-link" href="tel:+8802588866798">০২৫৮৮৮-৬৬৭৯৮</a><br>
+                <strong style="color: var(--primary);">ওয়েবসাইট:</strong> <a class="contact-link" href="https://www.ruet.ac.bd" target="_blank" rel="noopener noreferrer">www.ruet.ac.bd</a><br>
+                <strong style="color: var(--primary);">ই-মেইল:</strong> <a class="contact-link" href="mailto:registrar@ruet.ac.bd">registrar@ruet.ac.bd</a><br>
+                <strong style="color: var(--primary);">জনসংযোগ:</strong> <a class="contact-link" href="tel:+8801715137780">০১৭১৫-১৩৭৭৮০</a><br>
+                <strong style="color: var(--primary);">ছাত্র কল্যাণ:</strong> <a class="contact-link" href="tel:+8801777785756">০১৭৭৭-৭৮৫৭৫৬</a><br>
+                <strong style="color: var(--primary);">মেডিকেল সেন্টার:</strong> <a class="contact-link" href="tel:+8801915997662">০১৯১৫-৯৯৭৬৬২</a><br>
+                <strong style="color: var(--primary);">সিকিউরিটি:</strong> <a class="contact-link" href="tel:+8801714505260">০১৭১৪-৫০৫২৬০</a>
             </p>
         </div>
     </div>
@@ -502,16 +545,19 @@
         });
 
         function updateStaticUI() {
+            const langTextEl = document.getElementById('lang-text');
             if (currentLang === 'bn') {
                 sidebarTitleEl.innerText = "ছুটির তালিকা";
                 sidebarTitleEl.classList.add('bangla-text');
                 weekendBannerTextEl.innerText = "সাপ্তাহিক ছুটি: বৃহস্পতিবার ও শুক্রবার";
                 weekendBannerTextEl.classList.add('bangla-text');
+                langTextEl.innerHTML = '<span class="lang-inactive">EN</span> / <span class="lang-active bangla-text">বাংলা</span>';
             } else {
                 sidebarTitleEl.innerText = "Holiday List";
                 sidebarTitleEl.classList.remove('bangla-text');
                 weekendBannerTextEl.innerText = "Weekly Holidays: Thursday & Friday";
                 weekendBannerTextEl.classList.remove('bangla-text');
+                langTextEl.innerHTML = '<span class="lang-active">EN</span> / <span class="lang-inactive bangla-text">বাংলা</span>';
             }
         }
 
@@ -581,6 +627,7 @@
             }
 
             renderSidebarList(monthHolidays, month);
+            if (typeof updateNavButtons === 'function') updateNavButtons();
         }
 
         function renderSidebarList(holidaySet, monthIndex) {
@@ -621,14 +668,50 @@
             }
         }
 
-        document.getElementById('prev-btn').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; } renderCalendar(currentMonth, currentYear); });
-        document.getElementById('next-btn').addEventListener('click', () => { currentMonth++; if (currentMonth > 11) { currentMonth = 0; } renderCalendar(currentMonth, currentYear); });
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            prevBtn.disabled = (currentMonth === 0);
+            nextBtn.disabled = (currentMonth === 11);
+            prevBtn.style.opacity = prevBtn.disabled ? '0.35' : '1';
+            nextBtn.style.opacity = nextBtn.disabled ? '0.35' : '1';
+            prevBtn.style.cursor = prevBtn.disabled ? 'not-allowed' : 'pointer';
+            nextBtn.style.cursor = nextBtn.disabled ? 'not-allowed' : 'pointer';
+        }
 
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        window.onclick = function(event) { if (event.target.classList.contains('modal-overlay')) { event.target.classList.remove('active'); } }
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentMonth > 0) { currentMonth--; renderCalendar(currentMonth, currentYear); }
+        });
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentMonth < 11) { currentMonth++; renderCalendar(currentMonth, currentYear); }
+        });
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.getElementById(id).querySelector('.close-btn').focus();
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            if (!document.querySelector('.modal-overlay.active')) {
+                document.body.style.overflow = '';
+            }
+        }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+                if (!document.querySelector('.modal-overlay.active')) document.body.style.overflow = '';
+            }
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+                document.body.style.overflow = '';
+            }
+        });
 
         renderCalendar(currentMonth, currentYear);
+        updateNavButtons();
     </script>
 </body>
 </html>
