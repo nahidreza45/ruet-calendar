@@ -308,7 +308,7 @@
         </button>
 
         <!-- Brand Details -->
-        <div class="brand-section" id="brand-section">
+        <div class="brand-section" id="export-brand">
             <img src="ruet-logo.png" alt="RUET Logo" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/en/thumb/6/60/RUET_logo.svg/240px-RUET_logo.svg.png';">
             <div class="header-text-container">
                 <p class="motto bangla-text">ঐশী জ্যোতিই আমাদের পথ প্রদর্শক</p>
@@ -900,55 +900,64 @@
         })();
 
         // ===== EXPORT PNG =====
+ // ===== EXPORT PNG =====
         document.getElementById('export-png-btn').addEventListener('click', function() {
             const btn = this;
             btn.disabled = true;
             btn.textContent = 'Capturing...';
 
-            // Extract main content areas
             const calendarCard = document.querySelector('.calendar-card');
             const holidaySidebar = document.querySelector('.holiday-sidebar');
+            const brandSection = document.getElementById('export-brand'); // Targeting the brand header
 
-            // Set up a main wrapper for the canvas
+            // Create a temporary hidden wrapper to construct the perfect layout
             const wrapper = document.createElement('div');
             wrapper.style.cssText = `
-                display: flex;
-                flex-direction: column;
-                gap: 1.5rem;
-                padding: 2rem;
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+                width: 1100px;
+                padding: 2.5rem;
                 background: ${getComputedStyle(document.body).getPropertyValue('--bg-color').trim()};
                 font-family: 'Inter', sans-serif;
-                border-radius: 12px;
-                width: 1100px;
-            `;
-
-            // Setup Header specifically for Export (Only Logo and Titles)
-            const headerWrapper = document.createElement('div');
-            headerWrapper.style.cssText = `
                 display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                padding-bottom: 1.5rem;
-                border-bottom: 1px solid ${getComputedStyle(document.body).getPropertyValue('--border').trim()};
-                margin-bottom: 0.5rem;
+                flex-direction: column;
+                gap: 2rem;
+                border-radius: 12px;
             `;
-            
-            // Clone only the brand section, leaving interactive buttons out
-            const brandClone = document.getElementById('brand-section').cloneNode(true);
-            brandClone.style.display = 'flex';
-            brandClone.style.alignItems = 'center';
-            brandClone.style.gap = '1rem';
-            headerWrapper.appendChild(brandClone);
-            wrapper.appendChild(headerWrapper);
 
-            // Set up main grid wrapper for Calendar and Sidebar
-            const contentGrid = document.createElement('div');
-            contentGrid.style.cssText = `
+            // 1. Reconstruct the Top Brand Section centered
+            const headerClone = document.createElement('div');
+            headerClone.style.cssText = `
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                gap: 1rem;
+            `;
+            const brandClone = brandSection.cloneNode(true);
+            brandClone.style.flexDirection = 'column';
+            brandClone.style.alignItems = 'center';
+            brandClone.style.justifyContent = 'center';
+            brandClone.style.gap = '0.5rem';
+            
+            // Fix text alignment inside the brand container explicitly for the export
+            const textContainer = brandClone.querySelector('.header-text-container');
+            if(textContainer) {
+                textContainer.style.alignItems = 'center';
+                textContainer.style.textAlign = 'center';
+            }
+            headerClone.appendChild(brandClone);
+
+            // 2. Reconstruct the Bottom Calendar & Sidebar Grid
+            const gridClone = document.createElement('div');
+            gridClone.style.cssText = `
                 display: grid;
                 grid-template-columns: 2fr 1fr;
                 gap: 1.5rem;
+                width: 100%;
             `;
-
             const calClone = calendarCard.cloneNode(true);
             const sideClone = holidaySidebar.cloneNode(true);
             calClone.style.boxShadow = 'none';
@@ -956,15 +965,18 @@
             calClone.style.maxHeight = 'none';
             sideClone.style.maxHeight = 'none';
             
-            contentGrid.appendChild(calClone);
-            contentGrid.appendChild(sideClone);
-            wrapper.appendChild(contentGrid);
+            gridClone.appendChild(calClone);
+            gridClone.appendChild(sideClone);
 
-            // Temporarily mount to body for rendering
+            // Assemble into wrapper
+            wrapper.appendChild(headerClone);
+            wrapper.appendChild(gridClone);
             document.body.appendChild(wrapper);
 
+            // Magic: Force html2canvas to render as if on a 1200px desktop screen
             html2canvas(wrapper, {
                 scale: 2,
+                windowWidth: 1200, 
                 useCORS: true,
                 allowTaint: false,
                 backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-color').trim() || '#f1f5f9',
