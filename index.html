@@ -12,6 +12,7 @@
     <meta name="theme-color" content="#047857">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             /* Light Mode Palette */
@@ -21,6 +22,7 @@
             --text-muted: #475569;
             --primary: #047857; 
             --ruet-red: #b91c1c; 
+            --hijri-text: #0284c7; 
             --border: #cbd5e1;
             --cell-hover: #e2e8f0;
             --weekend-text: #dc2626;
@@ -44,6 +46,7 @@
             --text-muted: #94a3b8;
             --primary: #10b981; 
             --ruet-red: #ef4444; 
+            --hijri-text: #38bdf8; 
             --border: #334155;
             --cell-hover: #334155;
             --weekend-text: #f87171;
@@ -68,49 +71,108 @@
         }
 
         header {
-            width: 100%; max-width: 1200px; display: flex; flex-direction: row; justify-content: space-between;
-            align-items: center; margin-bottom: 0.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); gap: 1rem;
+            width: 100%; max-width: 1200px; display: flex; flex-direction: row;
+            align-items: center; justify-content: space-between; margin-bottom: 0.5rem; padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border); gap: 0.75rem;
             position: relative;
         }
 
-        .brand-section { display: flex; align-items: center; gap: 1rem; }
+        .brand-section { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; }
         .brand-section img { height: 65px; width: auto; background: #fff; border-radius: 25%; padding: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .header-text-container { display: flex; flex-direction: column; justify-content: center; }
         .motto { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem; }
         .title-bn { font-size: 1.6rem; font-weight: 800; color: var(--ruet-red); margin-bottom: 0.1rem; letter-spacing: -0.5px; }
         .title-en { font-size: 0.95rem; font-weight: 700; color: var(--primary); letter-spacing: 0.5px; }
         
-        .header-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+        /* ===== HEADER CLUSTER (Right Side) ===== */
+        .header-controls-cluster { display: flex; align-items: stretch; gap: 0.5rem; height: 68px; flex-shrink: 0; }
+
+        .live-today-section {
+            display: flex; align-items: center; gap: 0.65rem;
+            background: var(--surface-color); border: 1px solid var(--border);
+            border-radius: 8px; padding: 0.4rem 0.8rem 0.4rem 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin: 0; height: 100%; flex: 0 0 auto; min-width: 180px;
+        }
         
-        /* Mobile Nav Elements (Hidden on Desktop) */
-        .hamburger-btn, .mobile-theme-btn, .mobile-close-btn, .menu-backdrop { display: none; }
+        .live-dot { width: 10px; height: 10px; background: #dc2626; border-radius: 50%; animation: livePulse 1.4s ease-in-out infinite; flex-shrink: 0; }
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(220,38,38,0.6); }
+            50% { opacity: 0.4; transform: scale(0.75); box-shadow: 0 0 0 6px rgba(220,38,38,0); }
+        }
+        .live-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
+        
+        .live-dates { display: flex; flex-direction: column; gap: 0.1rem; line-height: 1.15; min-width: 0; overflow: hidden; }
+        .live-date-en { font-size: 0.77rem; font-weight: 800; color: var(--text-main); white-space: nowrap; }
+        .live-date-day { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .live-date-bn { font-size: 0.75rem; font-weight: 600; color: var(--primary); font-family: 'Tiro Bangla', serif; white-space: nowrap; margin-top: 2px;}
+        .live-date-hijri { font-size: 0.72rem; font-weight: 600; color: var(--hijri-text); font-family: 'Tiro Bangla', serif; white-space: nowrap; }
+
+        .toggle-column { display: flex; flex-direction: column; gap: 0.35rem; height: 100%; }
 
         button.outline-btn {
             background: var(--surface-color); border: 1px solid var(--border); color: var(--text-main);
-            padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+            border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
             transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        button.outline-btn svg { width: 16px; height: 16px; }
+        button.outline-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
         button.outline-btn:hover { background: var(--cell-hover); border-color: var(--text-muted); }
 
-        .main-container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: stretch; }
+        .toggle-column .outline-btn { flex: 1; padding: 0 0.6rem; margin: 0; }
+
+        .desktop-hamburger {
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface-color); border: 1px solid var(--border);
+            border-radius: 8px; width: 48px; height: 100%;
+            cursor: pointer; color: var(--text-main);
+            transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .desktop-hamburger:hover { background: var(--cell-hover); border-color: var(--text-muted); }
+        .desktop-hamburger svg { width: 24px; height: 24px; }
+
+        .mobile-hamburger, .mobile-theme-btn { display: none; }
         
+        /* Global Sidebar Menu */
+        .menu-backdrop { 
+            display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.6); z-index: 998; opacity: 0; pointer-events: none; transition: 0.3s; 
+        }
+        .menu-backdrop.open { opacity: 1; pointer-events: auto; }
+
+        .header-buttons { 
+            position: fixed; top: 0; left: -280px; width: 260px; height: 100vh; 
+            background: var(--surface-color); flex-direction: column; justify-content: flex-start; 
+            align-items: stretch; padding: 4.5rem 1.25rem 2rem 1.25rem; box-shadow: var(--shadow); 
+            transition: left 0.3s ease; z-index: 999; margin: 0; border-top: none; gap: 1rem;
+            display: flex; overflow-y: auto; overflow-x: hidden;
+        }
+        .header-buttons.open { left: 0; }
+        
+        .mobile-close-btn { 
+            position: absolute; top: 1.25rem; right: 1.25rem; 
+            background: var(--surface-color); border: 1px solid var(--border); 
+            border-radius: 50%; width: 34px; height: 34px; font-size: 1.4rem; 
+            color: var(--text-muted); cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; z-index: 10; 
+            flex-shrink: 0; transition: all 0.2s; padding-bottom: 2px;
+        }
+        .mobile-close-btn:hover { 
+            background: var(--holiday-bg); color: var(--holiday-text); 
+            border-color: var(--holiday-border); transform: rotate(90deg); 
+        }
+
+        .header-buttons .outline-btn { justify-content: flex-start; padding: 0.85rem 1rem; font-size: 1rem; }
+
+        /* General Calendar Container Layout */
+        .main-container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: stretch; }
         .calendar-card { background: var(--surface-color); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
         .calendar-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
-        
         .icon-btn { background: var(--surface-color); border: 1px solid var(--border); border-radius: 6px; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); transition: 0.2s; }
         .icon-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; flex-grow: 1; }
         .day-name { font-weight: 700; font-size: 0.85rem; color: var(--text-muted); padding-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; align-self: end; }
-
-        .day-cell {
-            display: flex; justify-content: center; align-items: center; font-size: 1.05rem; font-weight: 600;
-            border-radius: 6px; border: 1px solid var(--border); cursor: default; position: relative; transition: 0.2s;
-            background-color: var(--surface-color); min-height: 50px; padding: 0.2rem;
-        }
-
+        .day-cell { display: flex; justify-content: center; align-items: center; font-size: 1.05rem; font-weight: 600; border-radius: 6px; border: 1px solid var(--border); cursor: default; position: relative; transition: 0.2s; background-color: var(--surface-color); min-height: 50px; padding: 0.2rem; }
         .day-cell.empty { border: none; background: transparent; }
         .day-cell:not(.empty):hover { border-color: var(--primary); background-color: var(--cell-hover); z-index: 2; }
         .day-cell.current-day:hover { background-color: var(--primary); border-color: var(--primary); filter: brightness(1.12); }
@@ -119,53 +181,19 @@
         .day-cell.weekend { color: var(--weekend-text); background-color: var(--weekend-bg); }
         .day-cell.holiday { background-color: var(--holiday-bg); color: var(--holiday-text); border: 1.5px solid var(--holiday-border); cursor: pointer; font-weight: 700; }
         .day-cell.holiday:hover { background-color: var(--holiday-hover); transform: scale(1.03); }
-
-        /* CURRENT DAY HIGHLIGHT - Filled Color Logic */
-        .day-cell.current-day {
-            background-color: var(--primary);
-            color: #ffffff !important; 
-            border: none;
-            font-weight: 800;
-            z-index: 1;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-        }
-        
+        .day-cell.current-day { background-color: var(--primary); color: #ffffff !important; border: none; font-weight: 800; z-index: 1; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
         .day-cell.weekend.current-day { background-color: var(--weekend-text); }
         .day-cell.holiday.current-day { background-color: var(--holiday-text); border: none; }
-
-        body.dark-mode .day-cell.weekend.current-day,
-        body.dark-mode .day-cell.holiday.current-day {
-            background-color: #ef4444; 
-        }
+        body.dark-mode .day-cell.weekend.current-day, body.dark-mode .day-cell.holiday.current-day { background-color: #ef4444; }
         
-        /* Tooltips */
-        .tooltip {
-            visibility: hidden; background-color: var(--tooltip-bg); color: var(--tooltip-text); text-align: center;
-            border-radius: 6px; padding: 0.5rem 0.75rem; position: absolute; z-index: 10; bottom: 110%; left: 50%;
-            transform: translateX(-50%); width: max-content; max-width: 220px; white-space: normal; font-size: 0.8rem;
-            font-weight: 600; opacity: 0; transition: opacity 0.2s; box-shadow: var(--shadow); pointer-events: none; line-height: 1.4;
-        }
+        .tooltip { visibility: hidden; background-color: var(--tooltip-bg); color: var(--tooltip-text); text-align: center; border-radius: 6px; padding: 0.5rem 0.75rem; position: absolute; z-index: 10; bottom: 110%; left: 50%; transform: translateX(-50%); width: max-content; max-width: 220px; white-space: normal; font-size: 0.8rem; font-weight: 600; opacity: 0; transition: opacity 0.2s; box-shadow: var(--shadow); pointer-events: none; line-height: 1.4; }
         .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--tooltip-bg) transparent transparent transparent; }
         .day-cell.holiday:hover .tooltip { visibility: visible; opacity: 1; }
 
         .holiday-sidebar { background: var(--surface-color); border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: var(--shadow); display: flex; flex-direction: column; max-height: 100%; }
         .holiday-sidebar h3 { font-size: 1.15rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-main); font-weight: 700; flex-shrink: 0; transition: 0.2s; }
         
-        /* Weekend Banner CSS */
-        .weekend-banner {
-            background-color: var(--weekend-bg);
-            color: var(--weekend-text);
-            padding: 0.6rem 0.8rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-shrink: 0;
-            border: 1px solid var(--holiday-border);
-        }
+        .weekend-banner { background-color: var(--weekend-bg); color: var(--weekend-text); padding: 0.6rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; border: 1px solid var(--holiday-border); }
         body.dark-mode .weekend-banner { background-color: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
         
         .holiday-list { list-style: none; overflow-y: auto; padding-right: 5px; flex-grow: 1; }
@@ -177,36 +205,15 @@
         .holiday-name { color: var(--text-main); line-height: 1.4; font-weight: 600; }
         .no-holidays { color: var(--text-muted); font-style: italic; font-size: 0.95rem; text-align: center; padding-top: 1rem; }
 
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; padding: 1rem; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; padding: 1rem; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--surface-color); border-radius: 12px; padding: 2rem; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow); position: relative; transform: translateY(-20px); transition: 0.3s; }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         .modal-content::-webkit-scrollbar { width: 6px; }
         .modal-content::-webkit-scrollbar-track { background: transparent; }
         .modal-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 34px;
-            height: 34px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            flex-shrink: 0;
-            transition: all 0.2s;
-            line-height: 1;
-        }
+        .close-btn { position: absolute; top: 1rem; right: 1rem; background: var(--surface-color); border: 1px solid var(--border); border-radius: 50%; width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0; transition: all 0.2s; line-height: 1; }
         .close-btn:hover { background: var(--holiday-bg); color: var(--holiday-text); border-color: var(--holiday-border); transform: rotate(90deg); }
-        
         .modal-content h3 { margin-bottom: 1.5rem; color: var(--primary); font-size: 1.3rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; padding-right: 2.5rem; margin-top: 0; }
         .syn-group { margin-bottom: 1.2rem; }
         .syn-role { font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 0.2rem; }
@@ -214,77 +221,69 @@
         .syn-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .syn-list { list-style-type: disc; padding-left: 1.5rem; }
         .syn-list li { margin-bottom: 0.6rem; font-size: 0.95rem; line-height: 1.4;}
-
-        /* Contact Links */
-        .contact-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px dashed transparent;
-            transition: border-color 0.2s, opacity 0.2s;
-        }
+        .contact-link { color: var(--primary); text-decoration: none; font-weight: 600; border-bottom: 1px dashed transparent; transition: border-color 0.2s, opacity 0.2s; }
         .contact-link:hover { border-bottom-color: var(--primary); opacity: 0.8; }
-
-        /* Active language highlight */
         .lang-active { font-weight: 800; color: var(--primary); }
         .lang-inactive { font-weight: 400; color: var(--text-muted); }
 
-        /* Desktop specific */
-        @media (min-width: 1024px) and (min-height: 700px) { body { overflow: hidden; } .main-container { height: calc(100vh - 160px); } }
-        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; gap: 2rem; } .holiday-sidebar { max-height: 400px; } }
+        .holiday-item.past-holiday { opacity: 0.4; }
+        .holiday-item.today-holiday { background: #b91c1c !important; border-left-color: #7f1d1d !important; opacity: 1 !important; }
+        .holiday-item.today-holiday .holiday-date, .holiday-item.today-holiday .holiday-name { color: #ffffff !important; }
+        body.dark-mode .holiday-item.today-holiday { background: #047857 !important; border-left-color: #065f46 !important; }
+
+        @media (min-width: 1024px) and (min-height: 700px) { body { overflow: hidden; } .main-container { height: calc(100vh - 180px); } }
         
-        /* Mobile Layout & Hamburger Menu */
-        @media (max-width: 650px) {
-            header { flex-direction: column; text-align: center; gap: 1.25rem; padding-bottom: 1.5rem; padding-top: 2.5rem; border-bottom: none; }
-            .brand-section { flex-direction: column; gap: 0.75rem; }
+        /* ===== RESPONSIVE & MOBILE RULES ===== */
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; gap: 2rem; }
+            .holiday-sidebar { max-height: 400px; }
+            
+            header { flex-direction: column; text-align: center; gap: 1rem; padding-bottom: 1.5rem; padding-top: 3.5rem; border-bottom: none; align-items: center; }
+            .brand-section { flex-direction: column; gap: 0.75rem; flex: 0 0 auto; width: 100%; align-items: center; }
             .title-bn { font-size: 1.4rem; } .title-en { font-size: 0.7rem; }
             
-            /* Hamburger Button */
-            .hamburger-btn { 
+            /* Hide the structural cluster, elements will be moved by JS */
+            .header-controls-cluster { display: none; }
+            
+            /* Mobile fixed header buttons */
+            .mobile-hamburger { 
                 display: flex; position: absolute; top: 0.5rem; left: 0.5rem; 
                 background: transparent; border: none; color: var(--text-main); 
                 cursor: pointer; align-items: center; justify-content: center; 
                 width: 45px; height: 45px; z-index: 10;
             }
-            .hamburger-btn svg { width: 28px; height: 28px; }
-
-            /* Mobile Theme Button */
             .mobile-theme-btn { 
                 display: flex; position: absolute; top: 0.5rem; right: 0.5rem; 
                 background: transparent; border: none; color: var(--text-main); 
                 cursor: pointer; align-items: center; justify-content: center; 
                 width: 45px; height: 45px; z-index: 10;
             }
-            .mobile-theme-btn svg { width: 28px; height: 28px; }
+            .mobile-hamburger svg, .mobile-theme-btn svg { width: 28px; height: 28px; }
 
-            /* Hide Desktop Theme Button inside slide-out menu */
-            .desktop-theme-toggle { display: none !important; }
-            
-            /* Dimmed Backdrop for Menu */
-            .menu-backdrop { 
-                display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-                background: rgba(0,0,0,0.6); z-index: 998; opacity: 0; pointer-events: none; transition: 0.3s; 
+            /* Perfectly synced, left-aligned Mobile Sidebar Live Date */
+            .header-buttons .live-today-section {
+                flex: 0 0 auto; height: auto; 
+                width: 100%; max-width: 100%; 
+                margin-top: 0.5rem; margin-bottom: 1.5rem;
+                padding: 1.25rem 1rem; 
+                flex-direction: row; 
+                align-items: center; 
+                justify-content: flex-start;
+                text-align: left;
+                background: var(--surface-color); border: 1px solid var(--border);
+                box-shadow: var(--shadow); border-radius: 12px;
+                gap: 1rem; /* Space between dot and dates */
             }
-            .menu-backdrop.open { opacity: 1; pointer-events: auto; }
-            
-            /* Slide-out Sidebar Menu */
-            .header-buttons { 
-                position: fixed; top: 0; left: -260px; width: 250px; height: 100vh; 
-                background: var(--surface-color); flex-direction: column; justify-content: flex-start; 
-                align-items: stretch; padding: 4rem 1.5rem 2rem 1.5rem; box-shadow: var(--shadow); 
-                transition: left 0.3s ease; z-index: 999; margin: 0; border-top: none; gap: 1rem; 
+            .header-buttons .live-divider { display: none; }
+            .header-buttons .live-dates { 
+                align-items: flex-start; /* LEFT ALIGNED */
+                gap: 0.2rem; 
             }
-            .header-buttons.open { left: 0; }
             
-            /* Close Button inside Menu */
-            .mobile-close-btn { 
-                display: block; position: absolute; top: 1rem; right: 1rem; 
-                background: transparent; border: none; font-size: 2.5rem; 
-                color: var(--text-muted); cursor: pointer; line-height: 1; 
-            }
-
-            button.outline-btn { justify-content: flex-start; padding: 0.85rem 1rem; font-size: 1rem; }
-
+            .header-buttons #lang-toggle { margin-bottom: 0.5rem; }
+        }
+        
+        @media (max-width: 650px) {
             .calendar-card { padding: 1rem; } .day-cell { min-height: 40px; font-size: 0.95rem; } .day-name { font-size: 0.75rem; }
             .modal-content { padding: 1.5rem; }
         }
@@ -295,18 +294,20 @@
     <div class="menu-backdrop" id="menu-backdrop"></div>
 
     <header>
-        <button class="hamburger-btn" id="menu-btn">
+        <!-- Mobile Specific Absolute Buttons -->
+        <button class="hamburger-btn mobile-hamburger" id="mobile-menu-btn" aria-label="Open menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M3 12h18M3 6h18M3 18h18"></path>
             </svg>
         </button>
 
-        <button class="mobile-theme-btn" id="mobile-theme-toggle">
+        <button class="mobile-theme-btn" id="mobile-theme-toggle" aria-label="Toggle theme">
             <svg id="mobile-theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
         </button>
 
+        <!-- Brand Details -->
         <div class="brand-section">
             <img src="ruet-logo.png" alt="RUET Logo" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/en/thumb/6/60/RUET_logo.svg/240px-RUET_logo.svg.png';">
             <div class="header-text-container">
@@ -316,21 +317,57 @@
             </div>
         </div>
 
+        <!-- Desktop Right Layout Cluster -->
+        <div class="header-controls-cluster" id="right-cluster">
+            
+            <div class="live-today-section" id="live-today-section">
+                <div class="live-dot"></div>
+                <div class="live-divider"></div>
+                <div class="live-dates">
+                    <span class="live-date-en" id="live-date-en">Loading...</span>
+                    <span class="live-date-day" id="live-date-day"></span>
+                    <span class="live-date-bn" id="live-date-bn"></span>
+                    <span class="live-date-hijri" id="live-date-hijri"></span>
+                </div>
+            </div>
+
+            <div class="toggle-column" id="toggle-column">
+                <button class="outline-btn" id="lang-toggle" aria-label="Toggle language">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 8l6 6"></path><path d="M4 14l6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path>
+                        <path d="M22 22l-5-10-5 10"></path><path d="M14 18h6"></path>
+                    </svg>
+                    <span id="lang-text"></span>
+                </button>
+                <button class="outline-btn desktop-theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <span id="theme-text">Theme</span>
+                </button>
+            </div>
+
+            <button class="desktop-hamburger" id="desktop-menu-btn" aria-label="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M3 12h18M3 6h18M3 18h18"></path>
+                </svg>
+            </button>
+
+        </div>
+
+        <!-- Global Sidebar Menu -->
         <div class="header-buttons" id="nav-buttons">
             <button class="mobile-close-btn" id="mobile-close-btn">&times;</button>
-            <button class="outline-btn" id="lang-toggle" aria-label="Toggle language">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 8l6 6"></path><path d="M4 14l6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path>
-                    <path d="M22 22l-5-10-5 10"></path><path d="M14 18h6"></path>
-                </svg>
-                <span id="lang-text"></span>
-            </button>
             
-            <button class="outline-btn desktop-theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            <!-- JS dynamically injects the Live Date and Lang Toggle here when on mobile screens -->
+            
+            <button class="outline-btn" id="export-png-btn" aria-label="Export calendar as PNG">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-                <span id="theme-text">Theme</span>
+                Export PNG
             </button>
             
             <button class="outline-btn" onclick="openModal('syndicateModal')" aria-label="View Syndicate members">
@@ -340,6 +377,7 @@
                 </svg>
                 Syndicate
             </button>
+
             <button class="outline-btn" onclick="openModal('contactModal')" aria-label="View contact information">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -380,6 +418,7 @@
         </div>
     </div>
 
+    <!-- Modals -->
     <div class="modal-overlay" id="syndicateModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('syndicateModal')" aria-label="Close Syndicate modal">&times;</button>
@@ -461,7 +500,6 @@
 
         let currentLang = localStorage.getItem('lang') || 'bn';
 
-        // Date State
         const todayDateObj = new Date();
         const systemYear = todayDateObj.getFullYear();
         const systemMonth = todayDateObj.getMonth();
@@ -479,8 +517,9 @@
         const sidebarTitleEl = document.getElementById('sidebar-main-title');
         const weekendBannerTextEl = document.getElementById('weekend-banner-text');
 
-        // Mobile Menu Logic
-        const menuBtn = document.getElementById('menu-btn');
+        // ----- Mobile/Desktop Menu & Layout Script -----
+        const menuBtnDesk = document.getElementById('desktop-menu-btn');
+        const menuBtnMob = document.getElementById('mobile-menu-btn');
         const closeMenuBtn = document.getElementById('mobile-close-btn');
         const headerButtons = document.getElementById('nav-buttons');
         const menuBackdrop = document.getElementById('menu-backdrop');
@@ -490,19 +529,50 @@
             menuBackdrop.classList.toggle('open');
         }
 
-        menuBtn.addEventListener('click', toggleMobileMenu);
-        closeMenuBtn.addEventListener('click', toggleMobileMenu);
-        menuBackdrop.addEventListener('click', toggleMobileMenu);
+        if(menuBtnDesk) menuBtnDesk.addEventListener('click', toggleMobileMenu);
+        if(menuBtnMob) menuBtnMob.addEventListener('click', toggleMobileMenu);
+        if(closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMobileMenu);
+        if(menuBackdrop) menuBackdrop.addEventListener('click', toggleMobileMenu);
 
-        // Close mobile menu when an option is selected
-        const navBtns = headerButtons.querySelectorAll('.outline-btn');
-        navBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (window.innerWidth <= 650) {
-                    headerButtons.classList.remove('open');
-                    menuBackdrop.classList.remove('open');
+        // Dynamically move elements into the menu for mobile view using robust DOM insertion
+        function handleResponsiveLayout() {
+            const isMobile = window.innerWidth <= 900;
+            const sidebar = document.getElementById('nav-buttons');
+            const rightCluster = document.getElementById('toggle-column');
+            const liveSection = document.getElementById('live-today-section');
+            const langToggle = document.getElementById('lang-toggle');
+            const clusterContainer = document.getElementById('right-cluster');
+            const closeBtn = document.getElementById('mobile-close-btn');
+
+            if (isMobile) {
+                // Safely insert elements directly below the close button in the sidebar
+                if (langToggle && langToggle.parentNode !== sidebar) {
+                    closeBtn.insertAdjacentElement('afterend', langToggle);
                 }
-            });
+                if (liveSection && liveSection.parentNode !== sidebar) {
+                    closeBtn.insertAdjacentElement('afterend', liveSection);
+                }
+            } else {
+                // Restore elements to the desktop header
+                if (langToggle && rightCluster && langToggle.parentNode !== rightCluster) {
+                    rightCluster.insertBefore(langToggle, rightCluster.firstChild);
+                }
+                if (liveSection && clusterContainer && liveSection.parentNode !== clusterContainer) {
+                    clusterContainer.insertBefore(liveSection, rightCluster);
+                }
+            }
+        }
+        window.addEventListener('resize', handleResponsiveLayout);
+        document.addEventListener('DOMContentLoaded', handleResponsiveLayout);
+
+        // Smart event delegation: Close sidebar when a button is clicked, EXCEPT the language toggle
+        headerButtons.addEventListener('click', (e) => {
+            const clickedBtn = e.target.closest('.outline-btn');
+            if (clickedBtn && window.innerWidth <= 900) {
+                if (clickedBtn.id === 'lang-toggle') return; // Let user see the language switch without closing
+                headerButtons.classList.remove('open');
+                menuBackdrop.classList.remove('open');
+            }
         });
 
         // Theme Logic
@@ -634,6 +704,7 @@
             sidebarHolidaysEl.innerHTML = '';
             let uniqueList = []; let seenNames = [];
             let sortedHolidays = Array.from(holidaySet).sort((a, b) => a.dayNum - b.dayNum);
+            const todayPlain = new Date(systemYear, systemMonth, systemDay);
 
             sortedHolidays.forEach(item => {
                 if(!seenNames.includes(item.nameEn)) {
@@ -651,8 +722,20 @@
                     const displayName = currentLang === 'bn' ? item.nameBn : item.nameEn;
                     const fontClass = currentLang === 'bn' ? 'bangla-text' : '';
 
+                    const hEnd = new Date(fullHolidayDef.end);
+                    const hEndPlain = new Date(hEnd.getFullYear(), hEnd.getMonth(), hEnd.getDate());
+                    const hStart = new Date(fullHolidayDef.start);
+                    const hStartPlain = new Date(hStart.getFullYear(), hStart.getMonth(), hStart.getDate());
+
+                    let dynamicClass = '';
+                    if (todayPlain >= hStartPlain && todayPlain <= hEndPlain) {
+                        dynamicClass = 'today-holiday';
+                    } else if (hEndPlain < todayPlain) {
+                        dynamicClass = 'past-holiday';
+                    }
+
                     uniqueList.push(`
-                        <li class="holiday-item">
+                        <li class="holiday-item ${dynamicClass}">
                             <span class="holiday-date">${displayDate}</span>
                             <span class="holiday-name ${fontClass}">${displayName}</span>
                         </li>
@@ -708,6 +791,170 @@
                 document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
                 document.body.style.overflow = '';
             }
+        });
+
+        // ===== LIVE TODAY DATE LOGIC =====
+        (function initLiveToday() {
+            const today = new Date();
+            const d = today.getDate();
+            const m = today.getMonth();
+            const y = today.getFullYear();
+
+            const enDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const enMonthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            
+            // Format 1: English date, Year
+            document.getElementById('live-date-en').textContent = `${d} ${enMonthNames[m]}, ${y}`;
+            // Format 2: Day
+            document.getElementById('live-date-day').textContent = enDayNames[today.getDay()];
+
+            function toBn(n) {
+                const digits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+                return String(n).split('').map(c => /[0-9]/.test(c) ? digits[parseInt(c)] : c).join('');
+            }
+
+            function getBengaliDate(gYear, gMonth, gDay) {
+                const bnMonthNames = ['বৈশাখ','জ্যৈষ্ঠ','আষাঢ়','শ্রাবণ','ভাদ্র','আশ্বিন','কার্তিক','অগ্রহায়ণ','পৌষ','মাঘ','ফাল্গুন','চৈত্র'];
+                const monthStarts = [
+                    { gm:3,  gd:14, bnM:0  }, { gm:4,  gd:14, bnM:1  }, { gm:5,  gd:15, bnM:2  },
+                    { gm:6,  gd:16, bnM:3  }, { gm:7,  gd:16, bnM:4  }, { gm:8,  gd:16, bnM:5  },
+                    { gm:9,  gd:16, bnM:6  }, { gm:10, gd:15, bnM:7  }, { gm:11, gd:15, bnM:8  },
+                ];
+                const monthStartsJanMar = [
+                    { gm:0,  gd:14, bnM:9  }, { gm:1,  gd:13, bnM:10 }, { gm:2,  gd:14, bnM:11 },
+                ];
+
+                const inputDate = new Date(gYear, gMonth, gDay);
+                let bnMonth = -1, bnDay = -1, bnYear = -1;
+
+                for (let i = monthStarts.length - 1; i >= 0; i--) {
+                    const s = monthStarts[i];
+                    const startDate = new Date(gYear, s.gm, s.gd);
+                    if (inputDate >= startDate) {
+                        bnMonth = s.bnM;
+                        bnDay = Math.round((inputDate - startDate) / 86400000) + 1;
+                        bnYear = gYear - 593;
+                        break;
+                    }
+                }
+
+                if (bnMonth === -1) {
+                    for (let i = monthStartsJanMar.length - 1; i >= 0; i--) {
+                        const s = monthStartsJanMar[i];
+                        const startDate = new Date(gYear, s.gm, s.gd);
+                        if (inputDate >= startDate) {
+                            bnMonth = s.bnM;
+                            bnDay = Math.round((inputDate - startDate) / 86400000) + 1;
+                            bnYear = gYear - 594;
+                            break;
+                        }
+                    }
+                }
+
+                if (bnMonth === -1) {
+                    const poushStart = new Date(gYear - 1, 11, 15);
+                    bnMonth = 8;
+                    bnDay = Math.round((inputDate - poushStart) / 86400000) + 1;
+                    bnYear = gYear - 594;
+                }
+
+                return toBn(bnDay) + ' ' + bnMonthNames[bnMonth] + ' ' + toBn(bnYear);
+            }
+
+            document.getElementById('live-date-bn').textContent = getBengaliDate(y, m, d);
+
+            function getHijriDate(gy, gmo, gd) {
+                const a = Math.floor((14 - gmo) / 12);
+                const y2 = gy + 4800 - a;
+                const m2 = gmo + 12 * a - 3;
+                let jdn = gd + Math.floor((153 * m2 + 2) / 5) + 365 * y2
+                        + Math.floor(y2 / 4) - Math.floor(y2 / 100) + Math.floor(y2 / 400) - 32045;
+                const z = jdn - 1948440 + 10632;
+                const n = Math.floor((z - 1) / 10631);
+                const z2 = z - 10631 * n + 354;
+                const j = Math.floor((10985 - z2) / 5316) * Math.floor((50 * z2) / 17719)
+                        + Math.floor(z2 / 5670) * Math.floor((43 * z2) / 15238);
+                const z3 = z2 - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50)
+                         - Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
+                const hMonth = Math.floor((24 * z3) / 709);
+                const hDay = z3 - Math.floor((709 * hMonth) / 24);
+                const hYear = 30 * n + j - 30;
+                return { d: hDay, m: hMonth, y: hYear };
+            }
+
+            const hijriMonthsBn = ['মুহাররম','সফর','রবিউল আউয়াল','রবিউস সানি','জমাদিউল আউয়াল','জমাদিউস সানি','রজব','শাবান','রমজান','শাওয়াল','জিলকদ','জিলহজ'];
+
+            const hLocal = getHijriDate(y, m + 1, d);
+            document.getElementById('live-date-hijri').textContent = toBn(hLocal.d) + ' ' + hijriMonthsBn[hLocal.m - 1] + ' ' + toBn(hLocal.y);
+
+            const dateStr = String(d).padStart(2,'0') + '-' + String(m+1).padStart(2,'0') + '-' + y;
+            fetch('https://api.aladhan.com/v1/gToH?date=' + dateStr)
+                .then(r => { if (!r.ok) throw new Error('API error'); return r.json(); })
+                .then(data => {
+                    if (data && data.code === 200 && data.data && data.data.hijri) {
+                        const h = data.data.hijri;
+                        const monthNum = parseInt(h.month.number) - 1;
+                        const hijriText = toBn(parseInt(h.day)) + ' ' + hijriMonthsBn[monthNum] + ' ' + toBn(parseInt(h.year));
+                        document.getElementById('live-date-hijri').textContent = hijriText;
+                    }
+                })
+                .catch(() => {});
+        })();
+
+        // ===== EXPORT PNG =====
+        document.getElementById('export-png-btn').addEventListener('click', function() {
+            const btn = this;
+            btn.disabled = true;
+            btn.textContent = 'Capturing...';
+
+            const calendarCard = document.querySelector('.calendar-card');
+            const holidaySidebar = document.querySelector('.holiday-sidebar');
+
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = `
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+                background: ${getComputedStyle(document.body).getPropertyValue('--bg-color').trim()};
+                font-family: 'Inter', sans-serif;
+                border-radius: 12px;
+                width: 1100px;
+            `;
+
+            const calClone = calendarCard.cloneNode(true);
+            const sideClone = holidaySidebar.cloneNode(true);
+            calClone.style.boxShadow = 'none';
+            sideClone.style.boxShadow = 'none';
+            calClone.style.maxHeight = 'none';
+            sideClone.style.maxHeight = 'none';
+            wrapper.appendChild(calClone);
+            wrapper.appendChild(sideClone);
+
+            document.body.appendChild(wrapper);
+
+            html2canvas(wrapper, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-color').trim() || '#f1f5f9',
+                logging: false
+            }).then(canvas => {
+                document.body.removeChild(wrapper);
+                const link = document.createElement('a');
+                const today = new Date();
+                const monthNames2 = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+                link.download = `RUET-Calendar-${monthNames2[today.getMonth()]}-${today.getFullYear()}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+                btn.disabled = false;
+                btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Export PNG`;
+            }).catch(() => {
+                document.body.removeChild(wrapper);
+                btn.disabled = false;
+                btn.textContent = 'Export PNG';
+                alert('Export failed. Please try again.');
+            });
         });
 
         renderCalendar(currentMonth, currentYear);
