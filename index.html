@@ -308,7 +308,7 @@
         </button>
 
         <!-- Brand Details -->
-        <div class="brand-section">
+        <div class="brand-section" id="brand-section">
             <img src="ruet-logo.png" alt="RUET Logo" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/en/thumb/6/60/RUET_logo.svg/240px-RUET_logo.svg.png';">
             <div class="header-text-container">
                 <p class="motto bangla-text">ঐশী জ্যোতিই আমাদের পথ প্রদর্শক</p>
@@ -545,7 +545,6 @@
             const closeBtn = document.getElementById('mobile-close-btn');
 
             if (isMobile) {
-                // Safely insert elements directly below the close button in the sidebar
                 if (langToggle && langToggle.parentNode !== sidebar) {
                     closeBtn.insertAdjacentElement('afterend', langToggle);
                 }
@@ -553,7 +552,6 @@
                     closeBtn.insertAdjacentElement('afterend', liveSection);
                 }
             } else {
-                // Restore elements to the desktop header
                 if (langToggle && rightCluster && langToggle.parentNode !== rightCluster) {
                     rightCluster.insertBefore(langToggle, rightCluster.firstChild);
                 }
@@ -907,19 +905,48 @@
             btn.disabled = true;
             btn.textContent = 'Capturing...';
 
+            // Extract main content areas
             const calendarCard = document.querySelector('.calendar-card');
             const holidaySidebar = document.querySelector('.holiday-sidebar');
 
+            // Set up a main wrapper for the canvas
             const wrapper = document.createElement('div');
             wrapper.style.cssText = `
-                display: grid;
-                grid-template-columns: 2fr 1fr;
+                display: flex;
+                flex-direction: column;
                 gap: 1.5rem;
-                padding: 1.5rem;
+                padding: 2rem;
                 background: ${getComputedStyle(document.body).getPropertyValue('--bg-color').trim()};
                 font-family: 'Inter', sans-serif;
                 border-radius: 12px;
                 width: 1100px;
+            `;
+
+            // Setup Header specifically for Export (Only Logo and Titles)
+            const headerWrapper = document.createElement('div');
+            headerWrapper.style.cssText = `
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding-bottom: 1.5rem;
+                border-bottom: 1px solid ${getComputedStyle(document.body).getPropertyValue('--border').trim()};
+                margin-bottom: 0.5rem;
+            `;
+            
+            // Clone only the brand section, leaving interactive buttons out
+            const brandClone = document.getElementById('brand-section').cloneNode(true);
+            brandClone.style.display = 'flex';
+            brandClone.style.alignItems = 'center';
+            brandClone.style.gap = '1rem';
+            headerWrapper.appendChild(brandClone);
+            wrapper.appendChild(headerWrapper);
+
+            // Set up main grid wrapper for Calendar and Sidebar
+            const contentGrid = document.createElement('div');
+            contentGrid.style.cssText = `
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 1.5rem;
             `;
 
             const calClone = calendarCard.cloneNode(true);
@@ -928,9 +955,12 @@
             sideClone.style.boxShadow = 'none';
             calClone.style.maxHeight = 'none';
             sideClone.style.maxHeight = 'none';
-            wrapper.appendChild(calClone);
-            wrapper.appendChild(sideClone);
+            
+            contentGrid.appendChild(calClone);
+            contentGrid.appendChild(sideClone);
+            wrapper.appendChild(contentGrid);
 
+            // Temporarily mount to body for rendering
             document.body.appendChild(wrapper);
 
             html2canvas(wrapper, {
