@@ -851,6 +851,7 @@
                 opacity: 0;
                 transform: perspective(500px) rotateX(-90deg);
             }
+
             to {
                 opacity: var(--target-opacity, 1);
                 transform: perspective(500px) rotateX(0);
@@ -2349,7 +2350,7 @@
                         const monthNum = parseInt(h.month.number) - 1;
                         const dayNum = parseInt(h.day);
                         const yearNum = parseInt(h.year);
-                        
+
                         // Strict validation: Only apply API result if data is perfectly valid
                         if (!isNaN(dayNum) && !isNaN(yearNum) && monthNum >= 0 && monthNum <= 11) {
                             document.getElementById('live-date-hijri').textContent =
