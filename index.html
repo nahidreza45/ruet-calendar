@@ -846,15 +846,14 @@
             border-radius: 10px;
         }
 
-        @keyframes fadeInSlideUp {
+        @keyframes flipIn {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: perspective(500px) rotateX(-90deg);
             }
-
             to {
                 opacity: var(--target-opacity, 1);
-                transform: translateY(0);
+                transform: perspective(500px) rotateX(0);
             }
         }
 
@@ -865,8 +864,12 @@
             border-left: 3px solid var(--holiday-border);
             background: var(--holiday-bg);
             border-radius: 0 6px 6px 0;
+        }
+
+        .holiday-item.animate-in {
             opacity: 0;
-            animation: fadeInSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform-origin: top center;
+            animation: flipIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
         .holiday-date {
@@ -1091,30 +1094,16 @@
             background: rgba(16, 185, 129, 0.05);
         }
 
-        @keyframes fadeInLang {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
         .lang-active {
             font-weight: 800;
             color: var(--primary);
             display: inline-block;
-            animation: fadeInLang 0.3s ease forwards;
         }
 
         .lang-inactive {
             font-weight: 400;
             color: var(--text-muted);
             display: inline-block;
-            animation: fadeInLang 0.3s ease forwards;
         }
 
         /* ===== HOLIDAY SIDEBAR STATES ===== */
@@ -1972,10 +1961,13 @@
         const langToggleBtn = document.getElementById('lang-toggle');
         const mobileSidebarLangToggle = document.getElementById('mobile-sidebar-lang-toggle');
 
+        let isLangToggling = false;
         function toggleLang() {
+            isLangToggling = true;
             currentLang = currentLang === 'bn' ? 'en' : 'bn';
             localStorage.setItem('ruet-calendar-lang', currentLang);
             renderCalendar(currentMonth, currentYear);
+            isLangToggling = false;
         }
 
         langToggleBtn.addEventListener('click', toggleLang);
@@ -2177,8 +2169,15 @@
                     dynamicClass = 'past-holiday';
                 }
 
+                let animateStyle = '';
+                let animateClass = '';
+                if (isLangToggling) {
+                    animateClass = 'animate-in';
+                    animateStyle = `style="animation-delay: ${items.length * 0.03}s;"`;
+                }
+
                 items.push(`
-                    <li class="holiday-item ${dynamicClass}" role="listitem" style="animation-delay: ${items.length * 0.04}s;">
+                    <li class="holiday-item ${dynamicClass} ${animateClass}" role="listitem" ${animateStyle}>
                         <span class="holiday-date">${displayDate}</span>
                         <span class="holiday-name ${fontClass}">${displayName}</span>
                     </li>
@@ -2348,8 +2347,14 @@
                     if (data?.code === 200 && data?.data?.hijri) {
                         const h = data.data.hijri;
                         const monthNum = parseInt(h.month.number) - 1;
-                        document.getElementById('live-date-hijri').textContent =
-                            toBn(parseInt(h.day)) + ' ' + hijriMonthsBn[monthNum] + ' ' + toBn(parseInt(h.year));
+                        const dayNum = parseInt(h.day);
+                        const yearNum = parseInt(h.year);
+                        
+                        // Strict validation: Only apply API result if data is perfectly valid
+                        if (!isNaN(dayNum) && !isNaN(yearNum) && monthNum >= 0 && monthNum <= 11) {
+                            document.getElementById('live-date-hijri').textContent =
+                                toBn(dayNum) + ' ' + hijriMonthsBn[monthNum] + ' ' + toBn(yearNum);
+                        }
                     }
                 })
                 .catch(() => { }); // silent fallback
